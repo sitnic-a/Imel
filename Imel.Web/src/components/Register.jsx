@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { verifyEnteredFields } from "../utils";
 import { Errors } from "./Errors";
 import { register } from "../redux-toolkit/features/authSlice";
+import { FormFields } from "./FormFields";
 
 export const Register = () => {
   let dispatch = useDispatch();
@@ -43,33 +44,7 @@ export const Register = () => {
       </h3>
       <div className="register-container">
         <form className="register-form" onSubmit={handleSubmit}>
-          <div className="wrapper email">
-            <label>
-              Email: <span className="required-field">*</span>
-            </label>
-            <br />
-            <input
-              className="form-field"
-              type="text"
-              name="email"
-              placeholder="Unesite Vaš email (test@test.com)"
-            />
-          </div>
-
-          <div className="wrapper password">
-            <label>
-              Password: <span className="required-field">*</span>
-            </label>
-            <br />
-            <input
-              className="form-field"
-              type="password"
-              name="password"
-              placeholder="Unesite Vaš password (minimalno 8 karaktera, slova, specijalni znakovi i brojevi)"
-            />
-          </div>
-
-          <Errors errors={errors} />
+          <FormFields errors={errors} />
 
           <div className="wrapper register-actions">
             <button type="submit" className="register-submit">

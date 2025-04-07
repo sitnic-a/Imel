@@ -14,11 +14,13 @@
   font-size: 1rem;
 }
 
-.create-acc-btn {
+.create-acc-btn,
+.login-btn {
   margin-inline: 0.5rem;
 }
 
-.create-acc-btn:hover {
+.create-acc-btn:hover,
+.login-btn:hover {
   font-weight: 600;
 }
 

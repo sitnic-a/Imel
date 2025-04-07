@@ -23,6 +23,14 @@ export const Welcome = () => {
         to možete i uraditi
       </p>
 
+      <p>
+        Ukoliko već posjedujete korisnički račun, možete se
+        <a href="/login" className="login-btn">
+          ovdje
+        </a>
+        logirati
+      </p>
+
       <footer>
         <p>
           Kreirao <strong>&copy; Admir Sitnić, 2025</strong>

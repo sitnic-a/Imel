@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import store from "./redux-toolkit/store";
 import { Welcome } from "./components/Welcome";
 import { Register } from "./components/Register";
+import { Login } from "./components/Login";
 import "./App.css";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route index element={<Welcome />}></Route>
             <Route path="/register" element={<Register />}></Route>
+            <Route path="/login" element={<Login />}></Route>
           </Routes>
         </Router>
       </main>
