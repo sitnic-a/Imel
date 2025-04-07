@@ -65,7 +65,7 @@
   font-size: 0.86rem;
 }
 
-.register-submit {
+.submit {
   padding: 0.4rem;
   max-width: 120px;
   width: 100%;
@@ -75,7 +75,22 @@
   cursor: pointer;
 }
 
-.register-submit:hover {
+.submit:hover {
   background: #f1f1f1;
   color: #000;
+}
+
+#login {
+  max-width: 680px;
+  margin-top: 2rem;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.2rem;
+}
+
+@media (width <= 620px) {
+  #login {
+    margin-inline: 0.5rem;
+  }
 }

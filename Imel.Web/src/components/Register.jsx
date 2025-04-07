@@ -47,7 +47,7 @@ export const Register = () => {
           <FormFields errors={errors} />
 
           <div className="wrapper register-actions">
-            <button type="submit" className="register-submit">
+            <button type="submit" className="submit">
               Snimi
             </button>
           </div>

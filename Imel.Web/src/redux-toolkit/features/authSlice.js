@@ -5,7 +5,6 @@ let initialState = {};
 
 //register user
 export const register = createAsyncThunk("register", async (requestObject) => {
-  console.log("Sent through ", requestObject);
   let url = `${application.url}/auth/register`;
   let request = await fetch(url, {
     method: "POST",
@@ -16,6 +15,10 @@ export const register = createAsyncThunk("register", async (requestObject) => {
   });
   let response = await request.json();
   return response;
+});
+
+export const login = createAsyncThunk("/login", async (requestObject) => {
+  console.log("Login data ", requestObject);
 });
 
 export const authSlice = createSlice({
