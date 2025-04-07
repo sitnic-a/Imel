@@ -3,7 +3,7 @@ export const verifyEnteredFields = (data) => {
   let errors = [];
   let isValid = false;
 
-  let regexp_password = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_&&[^'";=()--]]).{8,}$/;
+  let regexp_password = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_]).{8,}$/;
   let regexp_email = /^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!data.email.match(regexp_email)) {

@@ -1,10 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { application } from "../../application";
 
 let initialState = {};
 
 //register user
-export const register = createAsyncThunk("register", async (request) => {
-  console.log("Sent through ", request);
+export const register = createAsyncThunk("register", async (requestObject) => {
+  console.log("Sent through ", requestObject);
+  let url = `${application.url}/auth/register`;
+  let request = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(requestObject),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let response = await request.json();
+  return response;
 });
 
 export const authSlice = createSlice({

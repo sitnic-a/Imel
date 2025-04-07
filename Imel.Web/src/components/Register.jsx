@@ -9,6 +9,7 @@ export const Register = () => {
   let [errors, setErrors] = useState([]);
 
   let handleSubmit = (e) => {
+    let __USER_ROLE = 2;
     e.preventDefault();
     let form = new FormData(e.target);
     let formData = Object.fromEntries([...form.entries()]);
@@ -18,9 +19,16 @@ export const Register = () => {
       let request = {
         email: formData["email"],
         password: formData["password"],
+        roles: [__USER_ROLE],
       };
-      dispatch(register(request));
-      console.log("Success");
+      dispatch(register(request)).then((response) => {
+        if (response.payload.statusCode === 201) {
+          alert("User successfully created");
+          window.location.href = "/login";
+          return;
+        }
+        console.error("Registration failed ");
+      });
       return;
     }
     console.log("Rejected");
