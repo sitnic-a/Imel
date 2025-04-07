@@ -1,6 +1,5 @@
 ﻿using Imel.API.Dto.Request;
 using Imel.API.Dto.Response;
-using Imel.API.Exceptions;
 using Imel.API.Extensions;
 using Imel.API.Helper;
 using Imel.API.Models;
@@ -31,39 +30,47 @@ namespace Imel.API.Services.Auth
         }
         public async Task<ResponseObject> Register(RegisterDto request)
         {
-            if (!request.IsValid())
+            try
             {
-                _authLogger.LogWarning("REGISTER: Argument is not valid",[request.Email,request.Password]);
-                throw new ArgumentNullException(request.ToString());  
+                if (!request.IsValid())
+                {
+                    _authLogger.LogWarning("REGISTER: Argument is not valid", [request.Email, request.Password]);
+                    return new ResponseObject(request, StatusCodes.Status400BadRequest, "REGISTER: Argument is not valid");
+                }
+
+                var dbUsers = _context.Users;
+                var existingUser = await dbUsers.SingleOrDefaultAsync(u => u.Email == request.Email) is not null;
+
+                if (existingUser)
+                {
+                    _authLogger.LogWarning("REGISTER: User is in database", [existingUser]);
+                    return new ResponseObject(existingUser, StatusCodes.Status400BadRequest, "REGISTER: User is in database");
+                }
+
+                var salt = user.GenerateSalt(__KEYSIZE__);
+                var hash = user.HashPassword(request.Password, salt, __ITERATIONS, __HASHALGORITHM__, __KEYSIZE__);
+                user = new User(request.Email, salt, hash);
+
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+
+                foreach (var role in request.Roles)
+                {
+                    await _context.UserRoles.AddAsync(new UserRole(user.Id, role));
+                }
+                await _context.SaveChangesAsync();
+
+                var roles = await _roleHelper.GetUserRoles(user);
+                var createdUser = new CreatedUser(user.Id, user.Email, roles);
+
+                _authLogger.LogInformation("REGISTER: User succesfully created", [user]);
+                return new ResponseObject(createdUser, StatusCodes.Status201Created, "Successfully created user");
+            }
+            catch (Exception e)
+            {
+                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"REGISTER: {e.Message}");
             }
 
-            var dbUsers = _context.Users;
-            var existingUser = await dbUsers.SingleOrDefaultAsync(u => u.Email == request.Email) is not null;
-
-            if (existingUser)
-            {
-                _authLogger.LogWarning("REGISTER: User is in database", [existingUser]);
-                throw new RecordAlreadyExistException("User already exists");
-            }
-
-            var salt = user.GenerateSalt(__KEYSIZE__);
-            var hash = user.HashPassword(request.Password, salt, __ITERATIONS, __HASHALGORITHM__, __KEYSIZE__);
-            user = new User(request.Email,salt, hash);
-
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-
-            foreach (var role in request.Roles)
-            {
-                await _context.UserRoles.AddAsync(new UserRole(user.Id, role));
-            }
-            await _context.SaveChangesAsync();
-
-            var roles = await _roleHelper.GetUserRoles(user);
-            var createdUser = new CreatedUser(user.Id, user.Email, roles);
-
-            _authLogger.LogInformation("REGISTER: User succesfully created", [user]);
-            return new ResponseObject(createdUser, StatusCodes.Status201Created, "Successfully created user");
         }
     }
 }
