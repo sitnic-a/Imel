@@ -2,6 +2,7 @@
 using Imel.API.Dto.Response;
 using Imel.API.Exceptions;
 using Imel.API.Extensions;
+using Imel.API.Helper;
 using Imel.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -12,6 +13,8 @@ namespace Imel.API.Services.Auth
     {
         private readonly DataContext _context;
         private readonly ILogger<IAuthService> _authLogger;
+        private readonly RoleHelper _roleHelper;
+
         public const int __KEYSIZE__ = 128;
         public const int __ITERATIONS = 350000;
         public const int __ADMIN_ROLE__ = 1;
@@ -24,6 +27,7 @@ namespace Imel.API.Services.Auth
         {
             _context = context;
             _authLogger = authLogger;
+            _roleHelper = new RoleHelper(_context);
         }
         public async Task<ResponseObject> Register(RegisterDto request)
         {
@@ -53,9 +57,13 @@ namespace Imel.API.Services.Auth
             {
                 await _context.UserRoles.AddAsync(new UserRole(user.Id, role));
             }
+            await _context.SaveChangesAsync();
+
+            var roles = await _roleHelper.GetUserRoles(user);
+            var createdUser = new CreatedUser(user.Id, user.Email, roles);
 
             _authLogger.LogInformation("REGISTER: User succesfully created", [user]);
-            return new ResponseObject(user, StatusCodes.Status201Created, "Successfully created user");
+            return new ResponseObject(createdUser, StatusCodes.Status201Created, "Successfully created user");
         }
     }
 }
