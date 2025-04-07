@@ -2,11 +2,13 @@
 {
     public class ResponseObject
     {
+        public object Response {get;set;}
         public int StatusCode { get; set; }
         public string Message { get; set; } = string.Empty;
 
-        public ResponseObject(int statusCode, string message)
+        public ResponseObject(object response, int statusCode, string message)
         {
+            Response = response;
             StatusCode = statusCode;
             Message = message;
         }
