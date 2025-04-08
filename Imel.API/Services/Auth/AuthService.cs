@@ -1,9 +1,13 @@
-﻿using Imel.API.Dto.Request;
+﻿using Azure;
+using Imel.API.Configuration;
+using Imel.API.Dto.Request;
 using Imel.API.Dto.Response;
 using Imel.API.Extensions;
 using Imel.API.Helper;
 using Imel.API.Models;
+using Imel.API.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 
 namespace Imel.API.Services.Auth
@@ -12,6 +16,7 @@ namespace Imel.API.Services.Auth
     {
         private readonly DataContext _context;
         private readonly ILogger<IAuthService> _authLogger;
+        private readonly IOptions<AppSettings> _options;
         private readonly RoleHelper _roleHelper;
 
         public const int __KEYSIZE__ = 128;
@@ -22,11 +27,12 @@ namespace Imel.API.Services.Auth
         private HashAlgorithmName __HASHALGORITHM__ = HashAlgorithmName.SHA512;
         private User user = new User();
 
-        public AuthService(DataContext context, ILogger<IAuthService> authLogger)
+        public AuthService(DataContext context, ILogger<IAuthService> authLogger, IOptions<AppSettings> options)
         {
             _context = context;
             _authLogger = authLogger;
             _roleHelper = new RoleHelper(_context);
+            _options = options;
         }
         public async Task<ResponseObject> Register(RegisterDto request)
         {
@@ -71,6 +77,57 @@ namespace Imel.API.Services.Auth
                 return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"REGISTER: {e.Message}");
             }
 
+        }
+
+        public async Task<ResponseObject> Login(LoginDto request)
+        {
+            try
+            {
+                if (!user.IsValid(request.Email, request.Password))
+                {
+                    _authLogger.LogError("LOGIN: Argument is not valid", [request]);
+                    return new ResponseObject(request, StatusCodes.Status400BadRequest, "LOGIN: Argument is not valid");
+                }
+                var jwtMiddleware = new JWTService(_options, _context);
+                var authenticated = await VerifyCredentials(request);
+                var dbUser = await _context.Users.SingleOrDefaultAsync(u => u.Email == request.Email);
+
+                if (authenticated && dbUser is not null)
+                {
+                    var dbUserRoles = await _roleHelper.GetUserRoles(dbUser);
+                    var token = jwtMiddleware.GenerateToken(dbUser);
+
+                    if (String.IsNullOrEmpty(token))
+                    {
+                        _authLogger.LogError("LOGIN: Token was not created", [token]);
+                        return new ResponseObject(token, StatusCodes.Status401Unauthorized, "LOGIN: Token was not created");
+                    }
+
+                    var responseUser = new SignedUser(dbUser.Id, dbUser.Email, token, dbUserRoles);
+                    _authLogger.LogInformation("LOGIN: Successfully logged in", [responseUser]);
+                    return new ResponseObject(responseUser, StatusCodes.Status200OK, "LOGIN: Successfully logged in");
+                }
+
+                _authLogger.LogWarning("LOGIN: Database user not available", [dbUser]);
+                return new ResponseObject(dbUser, StatusCodes.Status400BadRequest, "LOGIN: Database user not available");
+            }
+            catch (Exception e)
+            {
+                _authLogger.LogError("LOGIN: Database user not available", [e]);
+                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"LOGIN: {e.Message}");
+            }
+        }
+
+        private async Task<bool> VerifyCredentials(LoginDto request)
+        {
+            var dbUsers = _context.Users;
+            var existingUser = await dbUsers.SingleOrDefaultAsync(u => u.Email == request.Email);
+            if (existingUser is not null)
+            {
+                var hashToCompare = user.HashPassword(request.Password, existingUser.PasswordSalt, __ITERATIONS, __HASHALGORITHM__, __KEYSIZE__);
+                return CryptographicOperations.FixedTimeEquals(Convert.FromBase64String(hashToCompare), Convert.FromBase64String(existingUser.PasswordHash));
+            }
+            return false;
         }
     }
 }

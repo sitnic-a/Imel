@@ -1,4 +1,5 @@
-﻿using Imel.API.Models;
+﻿using Azure.Core;
+using Imel.API.Models;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -17,10 +18,16 @@ namespace Imel.API.Extensions
             return Convert.ToHexString(hash).ToLower();
         }
 
-        public static bool IsNotValid(this User user, string email, string password)
+        public static bool IsValid(this User user, string email, string password)
         {
-            return String.IsNullOrEmpty(email) || String.IsNullOrWhiteSpace(email) ||
-                   String.IsNullOrEmpty(password) || String.IsNullOrWhiteSpace(password);
+            if (String.IsNullOrEmpty(email) ||
+                String.IsNullOrWhiteSpace(email) ||
+                String.IsNullOrEmpty(password) ||
+                String.IsNullOrWhiteSpace(password)) return false;
+
+            if (password.Length < 8) return false;
+
+            return true;
         }
     }
 }

@@ -21,5 +21,11 @@ namespace Imel.API.Controllers
         {
             return await _authService.Register(request);
         }
+
+        [HttpPost("login")]
+        public async Task<ResponseObject> Login([FromBody] LoginDto request)
+        {
+            return await _authService.Login(request);
+        }
     }
 }
