@@ -1,8 +1,8 @@
 import React from "react";
 import { Login } from "./Login";
-import { AdminDashboard } from "../pages/AdminDashboard";
-import { UserDashboard } from "../pages/UserDashboard";
-import { fetchLocationStateHook } from "../custom/fetchLocationStateHook";
+import { AdminDashboard } from "../../pages/AdminDashboard";
+import { UserDashboard } from "../../pages/UserDashboard";
+import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
 
 export const Dashboard = () => {
   let { loggedUser } = fetchLocationStateHook();

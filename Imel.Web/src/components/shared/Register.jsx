@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { verifyEnteredFields } from "../utils";
+import { verifyEnteredFields } from "../../utils";
 import { Errors } from "./Errors";
-import { register } from "../redux-toolkit/features/authSlice";
+import { register } from "../../redux-toolkit/features/authSlice";
 import { FormFields } from "./FormFields";
 
 export const Register = () => {

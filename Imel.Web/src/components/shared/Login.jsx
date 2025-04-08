@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux-toolkit/features/authSlice";
-import { verifyLoginCredentials } from "../utils";
+import { login } from "../../redux-toolkit/features/authSlice";
+import { verifyLoginCredentials } from "../../utils";
 import { FormFields } from "./FormFields";
 import { useNavigate } from "react-router-dom";
 

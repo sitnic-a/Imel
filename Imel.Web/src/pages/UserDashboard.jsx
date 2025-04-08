@@ -1,5 +1,9 @@
-import React from "react";
+import { UsersPreview } from "../components/user-components/UsersPreview";
 
 export const UserDashboard = () => {
-  return <div>UserDashboard</div>;
+  return (
+    <section id="user-dashboard">
+      <UsersPreview />
+    </section>
+  );
 };
