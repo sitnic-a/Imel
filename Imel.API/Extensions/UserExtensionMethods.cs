@@ -1,5 +1,7 @@
 ﻿using Azure.Core;
+using Imel.API.Dto.Request;
 using Imel.API.Models;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -28,6 +30,12 @@ namespace Imel.API.Extensions
             if (password.Length < 8) return false;
 
             return true;
+        }
+
+        public static bool IsFiltering(this QueryUsers query)
+        {
+            return !String.IsNullOrEmpty(query.Email) && 
+                !String.IsNullOrWhiteSpace(query.Email) || query.Status != null;
         }
     }
 }
