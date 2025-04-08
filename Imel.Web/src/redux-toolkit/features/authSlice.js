@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { application } from "../../application";
 
-let initialState = {};
+let initialState = {
+  loggedUser: null,
+};
 
 //register user
 export const register = createAsyncThunk("register", async (requestObject) => {
@@ -19,6 +21,16 @@ export const register = createAsyncThunk("register", async (requestObject) => {
 
 export const login = createAsyncThunk("/login", async (requestObject) => {
   console.log("Login data ", requestObject);
+  let url = `${application.url}/auth/login`;
+  let request = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(requestObject),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let response = await request.json();
+  return response;
 });
 
 export const authSlice = createSlice({
@@ -36,6 +48,19 @@ export const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         console.log("Rejected ", action.payload);
+      })
+
+      //login
+      .addCase(login.pending, (state, action) => {
+        console.log("Logging pending");
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        console.log("Login fullfilled ", action.payload);
+        state.loggedUser = action.payload.response;
+        console.log("Logged user ", state.loggedUser);
+      })
+      .addCase(login.rejected, (state, action) => {
+        console.log("Login rejected ", action);
       });
   },
 });

@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux-toolkit/features/authSlice";
 import { verifyLoginCredentials } from "../utils";
 import { FormFields } from "./FormFields";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   let dispatch = useDispatch();
+  let navigate = useNavigate();
+  let { loggedUser } = useSelector((store) => store.auth);
   let [errors, setErrors] = useState([]);
 
   let handleSubmit = (e) => {
@@ -19,7 +22,17 @@ export const Login = () => {
         email: formData["email"],
         password: formData["password"],
       };
-      dispatch(login(request));
+      dispatch(login(request)).then((data) => {
+        let payload = data.payload;
+        if (payload.statusCode === 200) {
+          sessionStorage.setItem("token", payload.response.jwToken);
+          navigate("/dashboard", {
+            state: {
+              loggedUser: payload.response,
+            },
+          });
+        }
+      });
     }
     return;
   };
