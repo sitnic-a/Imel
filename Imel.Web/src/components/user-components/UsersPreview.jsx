@@ -19,6 +19,21 @@ export const UsersPreview = () => {
     status: null,
   };
 
+  let statuses = document.querySelectorAll("input[name='status-value'");
+  let statusValue = null;
+
+  statuses.forEach((s) => {
+    s.addEventListener("change", (e) => {
+      console.log("E ", e);
+
+      statusValue = document.querySelector(
+        'input[name="status-value"]:checked'
+      ).value;
+      statusValue = statusValue === "true";
+      console.log("Status value ", statusValue);
+    });
+  });
+
   useEffect(() => {
     dispatch(getUsers([query, application.paginationParams]));
   }, []);
@@ -46,14 +61,36 @@ export const UsersPreview = () => {
 
       <div className="filter">
         <div className="query email-filter">
-          <input type="text" placeholder="Find by email" />
+          <input
+            className="email-input"
+            type="text"
+            placeholder="Find by email"
+          />
         </div>
         <div className="query status-filter">
-          <label>Neaktivan</label>
-          <input type="checkbox" name="status-value" value={false} />
-          <label>Aktivan</label>
-          <input type="checkbox" name="status-value" value={true} />
+          <div className="query-status status-active">
+            <label>Neaktivan</label>
+            <input type="radio" name="status-value" value={false} />
+          </div>
+          <div className="query-status status-inactive">
+            <label>Aktivan</label>
+            <input type="radio" name="status-value" value={true} />
+          </div>
         </div>
+        <button
+          className="filter-button"
+          onClick={() => {
+            query = {
+              email: document.querySelector(".email-input").value,
+              status: statusValue,
+            };
+            console.log("Sending query ", query);
+
+            dispatch(getUsers([query, application.paginationParams]));
+          }}
+        >
+          Traži
+        </button>
       </div>
 
       <div className="new-user">
@@ -73,28 +110,29 @@ export const UsersPreview = () => {
           <div className="col col-actions"></div>
         </div>
 
-        {dbUsers.map((dbUser) => {
-          return (
-            <div className="users cols" key={dbUser.id}>
-              <div className="col">
-                <span>{dbUser.email}</span>
-              </div>
-              <div className="col">
-                <span>{dbUser.statusAsString}</span>
-              </div>
-              <div className="col">
-                <div className="col-actions">
-                  <span>
-                    <MdModeEdit className="action edit" />
-                  </span>
-                  <span>
-                    <MdDelete className="action delete" />
-                  </span>
+        {dbUsers.length > 0 &&
+          dbUsers.map((dbUser) => {
+            return (
+              <div className="users cols" key={dbUser.id}>
+                <div className="col">
+                  <span>{dbUser.email}</span>
+                </div>
+                <div className="col">
+                  <span>{dbUser.statusAsString}</span>
+                </div>
+                <div className="col">
+                  <div className="col-actions">
+                    <span>
+                      <MdModeEdit className="action edit" />
+                    </span>
+                    <span>
+                      <MdDelete className="action delete" />
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </section>
   );

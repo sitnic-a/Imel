@@ -138,13 +138,50 @@
   border-radius: 100%;
 }
 
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.email-input {
+  padding: 0.5rem 0.4rem;
+  outline: none;
+  border: 1px solid #cfcfcf;
+}
+
+.status-filter {
+  display: flex;
+  gap: 5px;
+  margin-top: 0.4rem;
+}
+
+.query-status {
+  color: #00000088;
+}
+
+.filter-button {
+  background: none;
+  border: 1px solid #cfcfcf;
+  padding-block: 0;
+  padding-inline: 0.9rem;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  border: 1px solid #0a276b;
+}
+
 .new-user {
   clear: both;
   padding: 0.3rem 0.5rem;
   float: right;
   margin-right: 2rem;
   cursor: pointer;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.2rem;
+  margin-top: -2rem;
 }
 
 .new-user:hover {
@@ -175,7 +212,7 @@
   border-left: none;
 }
 
-.cols:nth-child(2) {
+.cols:nth-child(3) {
   border-bottom: none;
 }
 
