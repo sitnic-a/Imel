@@ -167,6 +167,45 @@
 }
 
 .cols {
+  border: 1px solid #cfcfcf;
   display: flex;
   justify-content: space-evenly;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+}
+
+.cols:nth-child(2) {
+  border-bottom: none;
+}
+
+.col {
+  max-width: 290px;
+  width: 100%;
+  margin-left: 1rem;
+
+  /* background: yellow; */
+  /* text-align: center; */
+}
+
+.users .col {
+  text-align: unset;
+  margin-block: 0.25rem;
+  padding-block: 0.7rem;
+  margin-left: 1rem;
+  /* background: red; */
+}
+
+.users .col-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 0.1rem;
+  text-align: right;
+  margin-right: 2rem;
+}
+
+.col-actions .action {
+  font-size: 1.25rem;
+  color: #00000088;
 }
