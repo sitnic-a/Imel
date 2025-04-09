@@ -7,6 +7,7 @@ namespace Imel.API.Models
         public string Email { get; set; } = string.Empty;
         public byte[] PasswordSalt { get; set; }
         public string PasswordHash { get; set; } = string.Empty;
+        public bool Status { get; set; }
 
         public User(){}
         public User(string email, byte[] passwordSalt, string passwordHash)

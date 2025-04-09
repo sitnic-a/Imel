@@ -1,5 +1,4 @@
-﻿using Azure;
-using Imel.API.Configuration;
+﻿using Imel.API.Configuration;
 using Imel.API.Dto.Request;
 using Imel.API.Dto.Response;
 using Imel.API.Extensions;
@@ -25,7 +24,7 @@ namespace Imel.API.Services.Auth
         public const int __USER_ROLE__ = 2;
 
         private HashAlgorithmName __HASHALGORITHM__ = HashAlgorithmName.SHA512;
-        private User user = new User();
+        private Models.User user = new Models.User();
 
         public AuthService(DataContext context, ILogger<IAuthService> authLogger, IOptions<AppSettings> options)
         {
@@ -55,7 +54,7 @@ namespace Imel.API.Services.Auth
 
                 var salt = user.GenerateSalt(__KEYSIZE__);
                 var hash = user.HashPassword(request.Password, salt, __ITERATIONS, __HASHALGORITHM__, __KEYSIZE__);
-                user = new User(request.Email, salt, hash);
+                user = new Models.User(request.Email, salt, hash);
 
                 await _context.Users.AddAsync(user);
                 await _context.SaveChangesAsync();
@@ -74,6 +73,7 @@ namespace Imel.API.Services.Auth
             }
             catch (Exception e)
             {
+                _authLogger.LogError($"REGISTER: {e.Message}", [e]);
                 return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"REGISTER: {e.Message}");
             }
 
