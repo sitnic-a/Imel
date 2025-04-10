@@ -95,6 +95,50 @@
   }
 }
 
+#user-dashboard {
+  height: 100vh;
+  background: transparent;
+  transform: translateY(15%);
+}
+
+#new-existing-user {
+  transform: translateY(130%);
+  max-width: 400px;
+  min-height: 300px;
+  background: #f1f1f1;
+  margin: auto;
+  border: 1px solid #cfcfcf;
+  box-shadow: 2px 1px 30px #d0d0d0;
+}
+
+@media (width< 420px) {
+  #new-existing-user {
+    margin-inline: 1rem;
+  }
+}
+
+#new-existing-user .content {
+  margin-inline: 1rem;
+}
+
+#new-existing-user h1 {
+  text-align: center;
+}
+
+.new-user-form {
+  max-width: 350px;
+  margin: auto;
+}
+
+.new-user-form .wrapper .form-field:nth-child(1) {
+  width: 95%;
+  cursor: pointer;
+}
+
+.new-user-form .wrapper .form-field:nth-child(1):hover {
+  background: #fff;
+}
+
 #users-preview {
   max-width: 900px;
   margin-inline: auto;
@@ -245,4 +289,9 @@
 .col-actions .action {
   font-size: 1.25rem;
   color: #00000088;
+  cursor: pointer;
+}
+
+.col-actions .action:hover {
+  color: #ff8c00;
 }

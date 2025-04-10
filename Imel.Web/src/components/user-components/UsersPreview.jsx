@@ -9,9 +9,11 @@ import {
   MdModeEdit,
   MdDelete,
 } from "react-icons/md";
+import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 
 export const UsersPreview = () => {
   let dispatch = useDispatch();
+  let { isModalNewUserOpen } = useSelector((store) => store.modal);
   let { dbUsers } = useSelector((store) => store.user);
 
   let query = {
@@ -93,7 +95,12 @@ export const UsersPreview = () => {
         </button>
       </div>
 
-      <div className="new-user">
+      <div
+        className="new-user"
+        onClick={() => {
+          dispatch(openNewUserModal(!isModalNewUserOpen));
+        }}
+      >
         <FaPlus className="new-user-icon" />
       </div>
 
