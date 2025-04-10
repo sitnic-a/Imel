@@ -17,7 +17,7 @@ export const verifyEnteredFields = (data) => {
     );
   }
 
-  if (data?.password) {
+  if (data?.password === "") {
     if (data?.password?.length < 8) {
       errors.push("Password je obavezno polje!");
       errors.push("Password bi trebao imati minimalno 8 karaktera");

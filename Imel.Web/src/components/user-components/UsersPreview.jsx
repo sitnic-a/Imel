@@ -1,44 +1,13 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../redux-toolkit/features/userSlice";
-import { application } from "../../application";
-import { FaPlus } from "react-icons/fa6";
-import {
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdModeEdit,
-  MdDelete,
-} from "react-icons/md";
 import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
+import { FaPlus } from "react-icons/fa6";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { UserDataGridView } from "./UserDataGridView";
+import { FilterUsers } from "./FilterUsers";
 
 export const UsersPreview = () => {
   let dispatch = useDispatch();
   let { isModalNewUserOpen } = useSelector((store) => store.modal);
-  let { dbUsers } = useSelector((store) => store.user);
-
-  let query = {
-    email: "",
-    status: null,
-  };
-
-  let statuses = document.querySelectorAll("input[name='status-value'");
-  let statusValue = null;
-
-  statuses.forEach((s) => {
-    s.addEventListener("change", (e) => {
-      console.log("E ", e);
-
-      statusValue = document.querySelector(
-        'input[name="status-value"]:checked'
-      ).value;
-      statusValue = statusValue === "true";
-      console.log("Status value ", statusValue);
-    });
-  });
-
-  useEffect(() => {
-    dispatch(getUsers([query, application.paginationParams]));
-  }, []);
 
   return (
     <section id="users-preview">
@@ -61,39 +30,7 @@ export const UsersPreview = () => {
         </div>
       </div>
 
-      <div className="filter">
-        <div className="query email-filter">
-          <input
-            className="email-input"
-            type="text"
-            placeholder="Find by email"
-          />
-        </div>
-        <div className="query status-filter">
-          <div className="query-status status-active">
-            <label>Neaktivan</label>
-            <input type="radio" name="status-value" value={false} />
-          </div>
-          <div className="query-status status-inactive">
-            <label>Aktivan</label>
-            <input type="radio" name="status-value" value={true} />
-          </div>
-        </div>
-        <button
-          className="filter-button"
-          onClick={() => {
-            query = {
-              email: document.querySelector(".email-input").value,
-              status: statusValue,
-            };
-            console.log("Sending query ", query);
-
-            dispatch(getUsers([query, application.paginationParams]));
-          }}
-        >
-          Traži
-        </button>
-      </div>
+      <FilterUsers />
 
       <div
         className="new-user"
@@ -104,43 +41,7 @@ export const UsersPreview = () => {
         <FaPlus className="new-user-icon" />
       </div>
 
-      <div className="user-list-main-container">
-        <div className="cols">
-          <div className="col col-email">
-            <p>Email</p>
-          </div>
-
-          <div className="col col-status">
-            <p>Status</p>
-          </div>
-
-          <div className="col col-actions"></div>
-        </div>
-
-        {dbUsers.length > 0 &&
-          dbUsers.map((dbUser) => {
-            return (
-              <div className="users cols" key={dbUser.id}>
-                <div className="col">
-                  <span>{dbUser.email}</span>
-                </div>
-                <div className="col">
-                  <span>{dbUser.statusAsString}</span>
-                </div>
-                <div className="col">
-                  <div className="col-actions">
-                    <span>
-                      <MdModeEdit className="action edit" />
-                    </span>
-                    <span>
-                      <MdDelete className="action delete" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
+      <UserDataGridView />
     </section>
   );
 };
