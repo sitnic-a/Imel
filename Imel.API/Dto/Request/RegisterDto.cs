@@ -16,5 +16,11 @@ namespace Imel.API.Dto.Request
         public List<int>? Roles { get; set; }
 
         public RegisterDto(){}
+        public RegisterDto(string email, string password, List<int>? roles)
+        {
+            Email = email;
+            Password = password;
+            Roles = roles;
+        }
     }
 }

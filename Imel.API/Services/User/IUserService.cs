@@ -6,5 +6,6 @@ namespace Imel.API.Services.User
     public interface IUserService
     {
         public Task<ResponseObject> Get(QueryUsers searchQuery, PaginationParams paginationParams);
+        public Task<ResponseObject> AddNewUser(NewUser request);
     }
 }

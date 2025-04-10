@@ -22,5 +22,11 @@ namespace Imel.API.Controllers
         {
             return await _userService.Get(query,paginationParams);
         }
+
+        [HttpPost("add")]
+        public async Task<ResponseObject> AddNewUser([FromBody] NewUser request)
+        {
+            return await _userService.AddNewUser(request);
+        }
     }
 }
