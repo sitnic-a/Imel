@@ -256,7 +256,7 @@
   border-left: none;
 }
 
-.cols:nth-child(3) {
+.cols:last-child {
   border-bottom: none;
 }
 

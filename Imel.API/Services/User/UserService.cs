@@ -80,10 +80,9 @@ namespace Imel.API.Services.User
 
                 if (paginationParams.CurrentPage > 1)
                 {
-                    await dbUsers
-                            .Skip(paginationParams.CurrentPage - 1 * paginationParams.ElementsPerPage)
-                            .Take(paginationParams.ElementsPerPage)
-                            .ToListAsync();
+                    dbUsers = dbUsers
+                            .Skip(paginationParams.PreviousPage * paginationParams.ElementsPerPage)
+                            .Take(paginationParams.ElementsPerPage);
                 }
 
                 var responseUsers = await dbUsers

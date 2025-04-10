@@ -1,9 +1,10 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../redux-toolkit/features/userSlice";
-import { application } from "../../application";
 
 export const FilterUsers = () => {
   let dispatch = useDispatch();
+  let { paginationParams } = useSelector((store) => store.pagination);
+
   let query = {
     email: "",
     status: null,
@@ -50,7 +51,7 @@ export const FilterUsers = () => {
             status: statusValue,
           };
 
-          dispatch(getUsers([query, application.paginationParams]));
+          dispatch(getUsers([query, paginationParams]));
           statuses.forEach((status) => {
             status.checked = false;
           });

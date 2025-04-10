@@ -22,9 +22,22 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-export const addNewUser = createAsyncThunk("/user/create", async (data) => {
-  console.log("Sending user ", data);
-});
+export const addNewUser = createAsyncThunk(
+  "/user/create",
+  async (requestObject) => {
+    console.log("Sending user ", requestObject);
+    let url = `${application.url}/user/add`;
+    let request = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(requestObject),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let response = await request.json();
+    return response;
+  }
+);
 
 export const userSlice = createSlice({
   initialState,
@@ -50,7 +63,11 @@ export const userSlice = createSlice({
         console.log("Creating new user...");
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
-        console.log("New user created, dbUsers ", action.payload);
+        console.log(
+          "New user created, dbUsers ",
+          action.payload.response.response
+        );
+        state.dbUsers = action.payload.response.response;
       })
       .addCase(addNewUser.rejected, (state, action) => {
         console.log("Creating rejected");

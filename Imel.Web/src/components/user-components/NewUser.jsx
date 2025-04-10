@@ -2,10 +2,12 @@ import { useState } from "react";
 import { addNewUser } from "../../redux-toolkit/features/userSlice";
 import { verifyEnteredFields } from "../../utils";
 import { Errors } from "../shared/Errors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 
 export const NewUser = () => {
   let dispatch = useDispatch();
+  let { isModalNewUserOpen } = useSelector((store) => store.modal);
   let [errors, setErrors] = useState([]);
 
   let handleSubmit = (e) => {
@@ -19,7 +21,15 @@ export const NewUser = () => {
     setErrors(errors);
     if (isValid) {
       //Call service to add new user
-      dispatch(addNewUser(formData));
+      // Hardcoded value for password since user will have a possibility to change it's password
+      // One more reason to hard code is an add action that makes no sence to be in this panel
+      let request = {
+        email: formData["email"],
+        password: "password123!",
+        roles: [2],
+      };
+      dispatch(addNewUser(request));
+      dispatch(openNewUserModal(!isModalNewUserOpen));
     }
   };
 
