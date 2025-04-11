@@ -12,7 +12,7 @@ export const modalSlice = createSlice({
       state.isModalNewUserOpen = action.payload;
       if (state.isModalNewUserOpen === true) {
         document.querySelector("#user-dashboard").style.transform =
-          "translateY(-30%)";
+          "translateY(-36%)";
         return;
       }
       document.querySelector("#user-dashboard").style.transform =

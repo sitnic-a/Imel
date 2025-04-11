@@ -34,9 +34,17 @@ export const NewUser = () => {
   };
 
   return (
-    <section id="new-existing-user">
+    <section id="new-user">
       <header>
-        <h1>New user</h1>
+        <h1>
+          New user
+          <span
+            className="close"
+            onClick={() => dispatch(openNewUserModal(!isModalNewUserOpen))}
+          >
+            X
+          </span>
+        </h1>
       </header>
       <div className="content">
         <form className="new-user-form" onSubmit={handleSubmit}>

@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../redux-toolkit/features/userSlice";
 import { MdModeEdit, MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 export const UserDataGridView = () => {
   let dispatch = useDispatch();
+  let navigate = useNavigate();
   let { paginationParams } = useSelector((store) => store.pagination);
   let { dbUsers, usersCount } = useSelector((store) => store.user);
   let lastPage = parseInt(usersCount / paginationParams.elementsPerPage);
-
-  console.log("Last page ", lastPage);
 
   let query = {
     email: "",
@@ -51,7 +51,10 @@ export const UserDataGridView = () => {
               <div className="col">
                 <div className="col-actions">
                   <span>
-                    <MdModeEdit className="action edit" />
+                    <MdModeEdit
+                      className="action edit"
+                      onClick={() => navigate(`/user/${dbUser.id}`)}
+                    />
                   </span>
                   <span>
                     <MdDelete className="action delete" />

@@ -3,6 +3,11 @@
   margin: auto;
 }
 
+body {
+  user-select: none;
+  -moz-user-select: none;
+}
+
 #welcome {
   max-width: 900px;
   margin-inline: auto;
@@ -107,7 +112,7 @@
   }
 } */
 
-#new-existing-user {
+#new-user {
   transform: translateY(130%);
   max-width: 400px;
   min-height: 300px;
@@ -118,17 +123,30 @@
 }
 
 @media (width< 420px) {
-  #new-existing-user {
+  #new-user {
     margin-inline: 1rem;
   }
 }
 
-#new-existing-user .content {
+#new-user .content {
+  clear: both;
   margin-inline: 1rem;
 }
 
-#new-existing-user h1 {
+#new-user h1 {
   text-align: center;
+}
+
+#new-user .close {
+  float: right;
+  margin-right: 1rem;
+  color: #464646;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#new-existing-user .close:hover {
+  color: #ff8c00;
 }
 
 .new-user-form {
