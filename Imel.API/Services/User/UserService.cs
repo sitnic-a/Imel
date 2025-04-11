@@ -78,20 +78,24 @@ namespace Imel.API.Services.User
                     }
                 }
 
+                int usersCount = dbUsers.Count();
+
                 if (paginationParams.CurrentPage > 1)
                 {
                     dbUsers = dbUsers
+                            .OrderByDescending(u => u.Created)
                             .Skip(paginationParams.PreviousPage * paginationParams.ElementsPerPage)
                             .Take(paginationParams.ElementsPerPage);
                 }
 
                 var responseUsers = await dbUsers
+                    .OrderByDescending(u => u.Created)
                     .Take(paginationParams.ElementsPerPage)
                     .Select(u => new UserDto(u.Id, u.Email, u.Status))
                     .ToListAsync();
 
                 _userLogger.LogInformation("GET: Succesfully retrieved users", [dbUsers]);
-                return new ResponseObject(responseUsers, StatusCodes.Status200OK, "GET: Succesfully retrieved users");
+                return new ResponseObject(responseUsers, StatusCodes.Status200OK, "GET: Succesfully retrieved users", usersCount);
             }
             catch (Exception e)
             {

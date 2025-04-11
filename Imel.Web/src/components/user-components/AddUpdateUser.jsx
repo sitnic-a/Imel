@@ -6,9 +6,5 @@ export const AddUpdateUser = () => {
   let { id } = fetchLocationStateHook();
   console.log("Id ", id);
 
-  if (id > 0) {
-    return <NewUser />;
-  }
-
   return <section>{id === undefined && <NewUser />}</section>;
 };

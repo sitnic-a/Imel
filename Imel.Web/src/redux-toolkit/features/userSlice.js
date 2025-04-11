@@ -3,6 +3,7 @@ import { application } from "../../application";
 
 let initialState = {
   dbUsers: [],
+  usersCount: 0,
 };
 
 export const getUsers = createAsyncThunk(
@@ -48,11 +49,13 @@ export const userSlice = createSlice({
 
       //getUsers
       .addCase(getUsers.pending, (state, action) => {
-        console.log("Fetching users");
+        // console.log("Fetching users");
       })
       .addCase(getUsers.fulfilled, (state, action) => {
-        console.log("Fetched users ", action.payload);
+        // console.log("Fetched users ", action.payload);
         state.dbUsers = action.payload.response;
+        state.usersCount = action.payload.dataCount;
+        console.log("Users count ", state.usersCount);
       })
       .addCase(getUsers.rejected, (state, action) => {
         console.log("Fetching rejected ", action.payload);

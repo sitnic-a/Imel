@@ -1,12 +1,15 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../redux-toolkit/features/userSlice";
 import { MdModeEdit, MdDelete } from "react-icons/md";
-import { application } from "../../application";
 
 export const UserDataGridView = () => {
   let dispatch = useDispatch();
-  let { dbUsers } = useSelector((store) => store.user);
+  let { paginationParams } = useSelector((store) => store.pagination);
+  let { dbUsers, usersCount } = useSelector((store) => store.user);
+  let lastPage = parseInt(usersCount / paginationParams.elementsPerPage);
+
+  console.log("Last page ", lastPage);
 
   let query = {
     email: "",
@@ -14,8 +17,12 @@ export const UserDataGridView = () => {
   };
 
   useEffect(() => {
-    dispatch(getUsers([query, application.paginationParams]));
-  }, []);
+    let newPaginationParams = {
+      ...paginationParams,
+      lastPage: lastPage,
+    };
+    dispatch(getUsers([query, newPaginationParams]));
+  }, [paginationParams.currentPage]);
 
   return (
     <div className="user-list-main-container">

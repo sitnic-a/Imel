@@ -101,6 +101,12 @@
   transform: translateY(6%);
 }
 
+/* @media (width>1000px) {
+  #user-dashboard {
+    transform: translateY(10%);
+  }
+} */
+
 #new-existing-user {
   transform: translateY(130%);
   max-width: 400px;
