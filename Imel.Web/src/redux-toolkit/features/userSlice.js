@@ -42,8 +42,18 @@ export const addNewUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "user/update/{id}",
-  async (requestObject) => {
-    console.log("Update user request object ", requestObject);
+  async ([id, requestObject]) => {
+    console.log("Id", id, "Update user request object ", requestObject);
+    let url = `${application.url}/user/${id}`;
+    let request = await fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(requestObject),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let response = await request.json();
+    return response;
   }
 );
 
@@ -89,6 +99,8 @@ export const userSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         console.log("Updated users ", action.payload);
+        state.dbUsers = action.payload.response.response;
+        state.usersCount = action.payload.response.dataCount;
       })
       .addCase(updateUser.rejected, (state, action) => {
         console.log("Update rejected", action.payload);

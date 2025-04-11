@@ -17,6 +17,12 @@ namespace Imel.API.Controllers
             _userService = userService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ResponseObject> GetById(int id)
+        {
+            return await _userService.GetById(id);
+        }
+
         [HttpPost]
         public async Task<ResponseObject> Get([FromBody] QueryUsers query, [FromQuery] PaginationParams paginationParams)
         {
@@ -30,7 +36,7 @@ namespace Imel.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ResponseObject> UpdateUser(int id, UpdateUser request)
+        public async Task<ResponseObject> UpdateUser(int id, [FromBody] UpdateUser request)
         {
             return await _userService.UpdateUser(id, request);
         }

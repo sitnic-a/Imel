@@ -2,6 +2,7 @@
 using Imel.API.Dto.Request;
 using Imel.API.Dto.Response;
 using Imel.API.Extensions;
+using Imel.API.Models;
 using Imel.API.Services.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,36 +24,32 @@ namespace Imel.API.Services.User
             _userLogger = userLogger;
         }
 
-        public async Task<ResponseObject> AddNewUser(NewUser request)
+        public async Task<ResponseObject> GetById(int id)
         {
             try
             {
-                const int __USER_ROLE_ = 2;
-                if (request != null)
+                if (id <= 0)
                 {
-                    if (request.Roles.Any(r => r == __USER_ROLE_))
-                    {
-                        RegisterDto newUser = new RegisterDto(request.Email, request?.Password, request?.Roles);
-                        var createdUser = await _authService.Register(newUser);
-                        if (createdUser == null)
-                        {
-                            _userLogger.LogWarning("ADD-NEW-USER: New user is not created!", [createdUser]);
-                            return new ResponseObject(createdUser, StatusCodes.Status204NoContent, "ADD-NEW-USER: New user is not created!");
-                        }
-                        var query = new QueryUsers();
-                        var paginationParams = new PaginationParams();
-                        var users = await Get(query, paginationParams);
-                        _userLogger.LogInformation("ADD-NEW-USER: Succesfully created user", [users]);
-                        return new ResponseObject(users, StatusCodes.Status201Created, "ADD-NEW-USER: Succesfully created user");
-                    }
+                    _userLogger.LogWarning("GET/{id}: Bad request, params", [id]);
+                    return new ResponseObject(id, StatusCodes.Status400BadRequest, "GET/{id}: Bad request, params");
                 }
-                _userLogger.LogWarning("ADD-NEW-USER: Bad request, params null", [request]);
-                return new ResponseObject(request, StatusCodes.Status400BadRequest, "ADD-NEW-USER: Bad request, params null");
+
+                var dbUser = await _context.Users.FindAsync(id);
+
+                if (dbUser == null)
+                {
+                    _userLogger.LogInformation("GET/{id}: User couldn't be retrieved", [dbUser]);
+                    return new ResponseObject(dbUser, StatusCodes.Status404NotFound, "GET/{id}: User couldn't be retrieved");
+                }
+
+                var user = new UserDto(dbUser.Id, dbUser.Email, dbUser.Status);
+                _userLogger.LogInformation("GET/{id}: Successfully retrieved user", [user]);
+                return new ResponseObject(user, StatusCodes.Status200OK, "GET/{id}: Successfully retrieved user");
             }
             catch (Exception e)
             {
-                _userLogger.LogError($"ADD-NEW-USER: {e.Message}", [e]);
-                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"ADD-NEW-USER: {e.Message}");
+                _userLogger.LogInformation($"GET/{id}: {e.Message}", [e]);
+                return new ResponseObject(e, StatusCodes.Status200OK, $"GET/{id}: {e.Message}");
             }
         }
 
@@ -108,6 +105,41 @@ namespace Imel.API.Services.User
             }
         }
 
+        public async Task<ResponseObject> AddNewUser(NewUser request)
+        {
+            try
+            {
+                const int __USER_ROLE_ = 2;
+                if (request != null)
+                {
+                    if (request.Roles.Any(r => r == __USER_ROLE_))
+                    {
+                        RegisterDto newUser = new RegisterDto(request.Email, request?.Password, request?.Roles);
+                        var createdUser = await _authService.Register(newUser);
+                        if (createdUser == null)
+                        {
+                            _userLogger.LogWarning("ADD-NEW-USER: New user is not created!", [createdUser]);
+                            return new ResponseObject(createdUser, StatusCodes.Status204NoContent, "ADD-NEW-USER: New user is not created!");
+                        }
+                        var query = new QueryUsers();
+                        var paginationParams = new PaginationParams();
+                        var users = await Get(query, paginationParams);
+                        _userLogger.LogInformation("ADD-NEW-USER: Succesfully created user", [users]);
+                        return new ResponseObject(users, StatusCodes.Status201Created, "ADD-NEW-USER: Succesfully created user");
+                    }
+                }
+                _userLogger.LogWarning("ADD-NEW-USER: Bad request, params null", [request]);
+                return new ResponseObject(request, StatusCodes.Status400BadRequest, "ADD-NEW-USER: Bad request, params null");
+            }
+            catch (Exception e)
+            {
+                _userLogger.LogError($"ADD-NEW-USER: {e.Message}", [e]);
+                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"ADD-NEW-USER: {e.Message}");
+            }
+        }
+
+
+
         public async Task<ResponseObject> UpdateUser(int id, UpdateUser request)
         {
             try
@@ -120,14 +152,16 @@ namespace Imel.API.Services.User
                 var dbUser = await _context.Users.FindAsync(id);
                 if (dbUser != null)
                 {
-                    dbUser = _mapper.Map<Models.User>(request);
-                    _context.Update(dbUser) ;
+                    dbUser.Email = request.Email;
+                    if (request.Status.HasValue)
+                        dbUser.Status = request.Status.Value;
+                    _context.Update(dbUser);
                     await _context.SaveChangesAsync();
                     _userLogger.LogInformation("UPDATE: Succesfully updated user", [dbUser]);
                     var query = new QueryUsers();
                     var paginationParams = new PaginationParams();
-                    var users = Get(query, paginationParams);
-                    return new ResponseObject(users, StatusCodes.Status200OK, "UPDATE: Succesfully updated user");
+                    var users = await Get(query, paginationParams);
+                    return new ResponseObject(users, StatusCodes.Status200OK, "UPDATE: Succesfully updated user", users.DataCount);
                 }
                 _userLogger.LogWarning("UPDATE: User not available", [dbUser]);
                 return new ResponseObject(dbUser, StatusCodes.Status404NotFound, "UPDATE: User not available");
@@ -135,8 +169,8 @@ namespace Imel.API.Services.User
             }
             catch (Exception e)
             {
-
-                throw;
+                _userLogger.LogWarning($"UPDATE: {e.Message}", [e]);
+                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"UPDATE: {e.Message}");
             }
         }
     }
