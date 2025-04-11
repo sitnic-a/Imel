@@ -145,7 +145,7 @@ body {
   cursor: pointer;
 }
 
-#new-existing-user .close:hover {
+#new-user .close:hover {
   color: #ff8c00;
 }
 
@@ -318,4 +318,62 @@ body {
 
 .col-actions .action:hover {
   color: #ff8c00;
+}
+
+#existing-user {
+  max-width: 700px;
+  height: 90vh;
+  border: 1px solid #cfcfcf;
+  border-right: none;
+  /* border-left: none; */
+  padding: 0.5rem 1.5rem;
+  box-shadow: 1px 2px 10px #d0d0d0;
+}
+
+#existing-user header {
+  max-width: 650px;
+  margin-inline: auto;
+  margin-bottom: 2rem;
+}
+
+#existing-user header > h1 {
+  margin-left: 1.4rem;
+}
+
+#existing-user header > p {
+  max-width: 600px;
+  text-align: justify;
+}
+
+#existing-user .content .wrapper p {
+  margin: 0;
+  margin-block: 0;
+  /* text-align: center; */
+}
+
+.update-status .status {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.status-active,
+.status-inactive {
+  display: flex;
+  align-items: flex-start;
+}
+
+.save-changes {
+  background: #f1f1f1;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  box-shadow: 2px 5px 9px #cfcfcf;
+}
+
+.save-changes:hover {
+  background: #fff;
+  border: 1px solid #f1f1f1;
 }

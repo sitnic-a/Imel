@@ -26,8 +26,10 @@ export const UsersPreview = () => {
           dodavati ili brisati
         </p>
         <p>
-          U sklopu pregleda moguće je korisnike filtirati po njihovom statusu
-          aktivnosti ili emailu
+          <i>
+            U sklopu pregleda moguće je korisnike filtirati po njihovom statusu
+            aktivnosti ili emailu
+          </i>
         </p>
       </header>
 

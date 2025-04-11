@@ -40,6 +40,13 @@ export const addNewUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "user/update/{id}",
+  async (requestObject) => {
+    console.log("Update user request object ", requestObject);
+  }
+);
+
 export const userSlice = createSlice({
   initialState,
   name: "userSlice",
@@ -74,6 +81,17 @@ export const userSlice = createSlice({
       })
       .addCase(addNewUser.rejected, (state, action) => {
         console.log("Creating rejected");
+      })
+
+      //updateUser
+      .addCase(updateUser.pending, (state, action) => {
+        console.log("Updating user... ");
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        console.log("Updated users ", action.payload);
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        console.log("Update rejected", action.payload);
       });
   },
 });
