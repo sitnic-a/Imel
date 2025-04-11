@@ -1,22 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { updateUser } from "../../redux-toolkit/features/userSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { getById, updateUser } from "../../redux-toolkit/features/userSlice";
+import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
+import { verifyEnteredFields } from "../../utils";
+import { Errors } from "../shared/Errors";
 
 export const UpdateUser = () => {
   let dispatch = useDispatch();
+  let navigate = useNavigate();
+  let [errors, setErrors] = useState([]);
   let [email, setEmail] = useState("");
   let { id } = useParams();
+  let { loggedUser } = fetchLocationStateHook();
 
   let statuses = document.querySelectorAll("input[name='status-value'");
   let statusValue = null;
+
+  useEffect(() => {
+    let requestObject = {
+      id: id,
+    };
+
+    dispatch(getById(requestObject)).then((data) => {
+      let user = data.payload.response;
+      setEmail(user.email);
+      if (user.status === true)
+        document.querySelector(".status-value-active").checked = true;
+      else document.querySelector(".status-value-inactive").checked = true;
+    });
+  }, []);
 
   let handleSaveChanges = () => {
     let requestObject = {
       email: email,
       status: statusValue,
     };
-    dispatch(updateUser([id, requestObject]));
+    let [errors, isValid] = verifyEnteredFields(requestObject);
+    setErrors(errors);
+    if (isValid) {
+      dispatch(updateUser([id, requestObject])).then((data) => {
+        if (data.payload.statusCode === 200) {
+          navigate("/dashboard", { state: { loggedUser } });
+        }
+        return;
+      });
+    }
   };
 
   statuses.forEach((s) => {
@@ -67,12 +96,22 @@ export const UpdateUser = () => {
           <div className="status form-field">
             <div className="status-active">
               <label>Aktivan</label>
-              <input type="radio" name="status-value" value={true} />
+              <input
+                type="radio"
+                name="status-value"
+                className="status-value-active"
+                value={true}
+              />
             </div>
 
             <div className="status-inactive">
               <label>Neaktivan</label>
-              <input type="radio" name="status-value" value={false} />
+              <input
+                type="radio"
+                name="status-value"
+                className="status-value-inactive"
+                value={false}
+              />
             </div>
           </div>
         </div>
@@ -81,11 +120,14 @@ export const UpdateUser = () => {
           <button
             type="button"
             className="save-changes"
-            onClick={handleSaveChanges}
+            onClick={() => {
+              handleSaveChanges();
+            }}
           >
             Snimi promjene
           </button>
         </div>
+        <Errors errors={errors} />
       </div>
     </section>
   );

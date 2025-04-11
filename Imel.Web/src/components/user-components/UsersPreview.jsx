@@ -30,6 +30,11 @@ export const UsersPreview = () => {
             U sklopu pregleda moguće je korisnike filtirati po njihovom statusu
             aktivnosti ili emailu
           </i>
+          <br />
+          <i className="error-field">
+            Za slučaj da ne vidite kompletan sadržaj polja, koristite opciju
+            "scroll"
+          </i>
         </p>
       </header>
 

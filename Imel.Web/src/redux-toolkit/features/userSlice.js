@@ -6,6 +6,21 @@ let initialState = {
   usersCount: 0,
 };
 
+export const getById = createAsyncThunk(
+  "user/get/{id}",
+  async (requestObject) => {
+    let url = `${application.url}/user/${requestObject.id}`;
+    let request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let response = await request.json();
+    return response;
+  }
+);
+
 export const getUsers = createAsyncThunk(
   "/users",
   async ([query, paginationParams]) => {
@@ -57,12 +72,37 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const deleteById = createAsyncThunk("user/delete/{id}", async ([id]) => {
+  console.log("User to delete ", id);
+
+  let url = `${application.url}/user/${id}`;
+  let request = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  let response = await request.json();
+  return response;
+});
+
 export const userSlice = createSlice({
   initialState,
   name: "userSlice",
   reducers: {},
   extraReducers: (builder) => {
     builder
+
+      //getById
+      .addCase(getById.pending, (state, action) => {
+        console.log("Fetching user by id...");
+      })
+      .addCase(getById.fulfilled, (state, action) => {
+        console.log("Fetched user ", action.payload);
+      })
+      .addCase(getById.rejected, (state, action) => {
+        console.log("Fetch rejected ", action.payload);
+      })
 
       //getUsers
       .addCase(getUsers.pending, (state, action) => {
@@ -104,6 +144,17 @@ export const userSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state, action) => {
         console.log("Update rejected", action.payload);
+      })
+
+      //deleteUser
+      .addCase(deleteById.pending, (state, action) => {
+        console.log("Deleting user...");
+      })
+      .addCase(deleteById.fulfilled, (state, action) => {
+        console.log("After deletion result ", action.payload);
+      })
+      .addCase(deleteById.rejected, (state, action) => {
+        console.log("Delete rejected ", action.payload);
       });
   },
 });

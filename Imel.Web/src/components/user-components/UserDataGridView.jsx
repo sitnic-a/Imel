@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../redux-toolkit/features/userSlice";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
+import { Confirmation } from "../shared/Confirmation";
 
 export const UserDataGridView = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  let { loggedUser } = fetchLocationStateHook();
   let { paginationParams } = useSelector((store) => store.pagination);
   let { dbUsers, usersCount } = useSelector((store) => store.user);
   let lastPage = parseInt(usersCount / paginationParams.elementsPerPage);
@@ -53,13 +56,18 @@ export const UserDataGridView = () => {
                   <span>
                     <MdModeEdit
                       className="action edit"
-                      onClick={() => navigate(`/user/${dbUser.id}`)}
+                      onClick={() =>
+                        navigate(`/user/${dbUser.id}`, {
+                          state: { loggedUser },
+                        })
+                      }
                     />
                   </span>
                   <span>
                     <MdDelete className="action delete" />
                   </span>
                 </div>
+                <Confirmation />
               </div>
             </div>
           );

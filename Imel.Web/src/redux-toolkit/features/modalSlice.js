@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
   isModalNewUserOpen: false,
+  isModalDeleteUserOpen: false,
 };
 
 export const modalSlice = createSlice({
@@ -18,9 +19,18 @@ export const modalSlice = createSlice({
       document.querySelector("#user-dashboard").style.transform =
         "translateY(6%)";
     },
+    openDeleteUserModal: (state, action) => {
+      state.isModalDeleteUserOpen = action.payload;
+
+      if (state.isModalDeleteUserOpen == true) {
+        document.querySelector(".col-actions").style.opacity = 0;
+        return;
+      }
+      document.querySelector(".col-actions").style.opacity = 1;
+    },
   },
 });
 
-export const { openNewUserModal } = modalSlice.actions;
+export const { openNewUserModal, openDeleteUserModal } = modalSlice.actions;
 
 export default modalSlice.reducer;

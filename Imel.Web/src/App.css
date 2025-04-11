@@ -65,9 +65,14 @@ body {
   border: 1px solid #cfcfcf;
 }
 
+.form-field:focus {
+  transition: 400ms;
+  border: 1px solid #00f;
+}
+
 .error-field {
   color: #f00;
-  font-size: 0.86rem;
+  font-size: 0.89rem;
 }
 
 .submit {
@@ -298,7 +303,12 @@ body {
   margin-block: 0.25rem;
   padding-block: 0.7rem;
   margin-left: 1rem;
+  overflow-x: scroll;
   /* background: red; */
+}
+
+.users .col::-webkit-scrollbar {
+  display: none;
 }
 
 .users .col-actions {
@@ -376,4 +386,46 @@ body {
 .save-changes:hover {
   background: #fff;
   border: 1px solid #f1f1f1;
+}
+
+#confirmation {
+  display: block;
+  opacity: 0;
+  float: right;
+  margin-right: 0.7rem;
+  max-width: 150px;
+  max-height: 100px;
+  /* background: yellow; */
+}
+
+#confirmation header {
+  text-align: center;
+}
+
+#confirmation .actions {
+  clear: both;
+  display: flex;
+  justify-content: flex-end;
+  gap: 13px;
+}
+
+.confirmation-choice {
+  font-size: 1.9rem;
+  cursor: pointer;
+}
+
+.confirm-icon {
+  color: #0f0;
+}
+
+.confirm-icon:hover {
+  color: rgb(0, 104, 0);
+}
+
+.reject-icon {
+  color: #f00;
+}
+
+.reject-icon:hover {
+  color: rgb(97, 0, 0);
 }
