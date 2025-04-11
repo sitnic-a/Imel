@@ -9,7 +9,14 @@ namespace Imel.API.Models
         public string PasswordHash { get; set; } = string.Empty;
         public bool Status { get; set; }
 
-        public User(){}
+        public User() { }
+
+        public User(string email, bool? status = null)
+        {
+            Email = email;
+            if (status != null)
+                Status = status.Value;
+        }
         public User(string email, byte[] passwordSalt, string passwordHash)
         {
             Email = email;
@@ -17,5 +24,6 @@ namespace Imel.API.Models
             PasswordHash = passwordHash;
             Created = DateTime.Now;
         }
+
     }
 }

@@ -28,5 +28,11 @@ namespace Imel.API.Controllers
         {
             return await _userService.AddNewUser(request);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ResponseObject> UpdateUser(int id, UpdateUser request)
+        {
+            return await _userService.UpdateUser(id, request);
+        }
     }
 }

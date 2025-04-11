@@ -1,8 +1,10 @@
-﻿using Imel.API.Dto.Request;
+﻿using AutoMapper;
+using Imel.API.Dto.Request;
 using Imel.API.Dto.Response;
 using Imel.API.Extensions;
 using Imel.API.Services.Auth;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Imel.API.Services.User
 {
@@ -10,12 +12,14 @@ namespace Imel.API.Services.User
     {
         private readonly DataContext _context;
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
         private readonly ILogger<IUserService> _userLogger;
 
-        public UserService(DataContext context, IAuthService authService, ILogger<IUserService> userLogger)
+        public UserService(DataContext context, IAuthService authService, IMapper mapper, ILogger<IUserService> userLogger)
         {
             _context = context;
             _authService = authService;
+            _mapper = mapper;
             _userLogger = userLogger;
         }
 
@@ -101,6 +105,38 @@ namespace Imel.API.Services.User
             {
                 _userLogger.LogError($"GET: {e.Message}", [e]);
                 return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"GET: {e.Message}");
+            }
+        }
+
+        public async Task<ResponseObject> UpdateUser(int id, UpdateUser request)
+        {
+            try
+            {
+                if (id <= 0 || request.Email.IsNullOrEmpty())
+                {
+                    _userLogger.LogWarning("UPDATE: Bad request sent, params", [id, request]);
+                    return new ResponseObject(new { id, request }, StatusCodes.Status400BadRequest, "UPDATE: Bad request sent, params");
+                }
+                var dbUser = await _context.Users.FindAsync(id);
+                if (dbUser != null)
+                {
+                    dbUser = _mapper.Map<Models.User>(request);
+                    _context.Update(dbUser) ;
+                    await _context.SaveChangesAsync();
+                    _userLogger.LogInformation("UPDATE: Succesfully updated user", [dbUser]);
+                    var query = new QueryUsers();
+                    var paginationParams = new PaginationParams();
+                    var users = Get(query, paginationParams);
+                    return new ResponseObject(users, StatusCodes.Status200OK, "UPDATE: Succesfully updated user");
+                }
+                _userLogger.LogWarning("UPDATE: User not available", [dbUser]);
+                return new ResponseObject(dbUser, StatusCodes.Status404NotFound, "UPDATE: User not available");
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
         }
     }

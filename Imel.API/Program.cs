@@ -22,6 +22,9 @@ builder.Services.AddDbContext<DataContext>(options =>
         .GetConnectionString("ImelConn"));
 });
 
+//Automapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddTransient<IAuthService,AuthService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
