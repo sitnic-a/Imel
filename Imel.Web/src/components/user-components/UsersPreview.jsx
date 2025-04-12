@@ -58,24 +58,25 @@ export const UsersPreview = () => {
               }}
             />
           )}
-          {paginationParams.currentPage <= paginationParams.lastPage && (
-            <MdKeyboardArrowRight
-              className="pagination-arrow right"
-              onClick={(e) => {
-                let newPaginationParams = {
-                  ...paginationParams,
-                  currentPage: paginationParams.currentPage + 1,
-                  previousPage: paginationParams.currentPage,
-                  lastPage: parseInt(
-                    usersCount / paginationParams.elementsPerPage
-                  ),
-                };
-                // console.log("Query ", query, "New params", newPaginationParams);
-                dispatch(setPaginationParams(newPaginationParams));
-                // console.log("Query ", query, "Pagination", newPaginationParams);
-              }}
-            />
-          )}
+          {paginationParams.currentPage <= paginationParams.lastPage &&
+            usersCount > 5 && (
+              <MdKeyboardArrowRight
+                className="pagination-arrow right"
+                onClick={(e) => {
+                  let newPaginationParams = {
+                    ...paginationParams,
+                    currentPage: paginationParams.currentPage + 1,
+                    previousPage: paginationParams.currentPage,
+                    lastPage: parseInt(
+                      usersCount / paginationParams.elementsPerPage
+                    ),
+                  };
+                  // console.log("Query ", query, "New params", newPaginationParams);
+                  dispatch(setPaginationParams(newPaginationParams));
+                  // console.log("Query ", query, "Pagination", newPaginationParams);
+                }}
+              />
+            )}
         </div>
       </div>
 

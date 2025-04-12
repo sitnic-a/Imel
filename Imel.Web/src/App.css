@@ -105,6 +105,10 @@ body {
   }
 }
 
+.credentials-error {
+  display: none;
+}
+
 #user-dashboard {
   height: 100vh;
   background: transparent;

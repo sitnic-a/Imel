@@ -77,17 +77,8 @@ export const UserDataGridView = () => {
                         let colActions = e.currentTarget.parentNode.parentNode;
                         let col = colActions.parentNode;
                         let confirmModal = col.querySelector("#confirmation");
+                        displayConfirmationContainer(confirmModal);
                         dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
-                        if (isModalDeleteUserOpen === false) {
-                          dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
-                          displayConfirmationContainer(confirmModal);
-                          return;
-                        }
-                        if (isModalDeleteUserOpen === true) {
-                          dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
-                          closeConfirmModal(confirmModal);
-                          return;
-                        }
                       }}
                     />
                   </span>

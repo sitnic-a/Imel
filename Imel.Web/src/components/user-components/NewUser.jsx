@@ -7,6 +7,7 @@ import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 
 export const NewUser = () => {
   let dispatch = useDispatch();
+  let { usersCount } = useSelector((store) => store.user);
   let { isModalNewUserOpen } = useSelector((store) => store.modal);
   let [errors, setErrors] = useState([]);
 
@@ -28,7 +29,12 @@ export const NewUser = () => {
         password: "password123!",
         roles: [2],
       };
-      dispatch(addNewUser(request));
+      dispatch(addNewUser(request)).then((data) => {
+        let payload = data.payload.response;
+        console.log("payload ", payload);
+
+        if (payload.dataCount % 5 === 1) window.location.reload();
+      });
       dispatch(openNewUserModal(!isModalNewUserOpen));
     }
   };

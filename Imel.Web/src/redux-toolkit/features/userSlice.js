@@ -128,6 +128,9 @@ export const userSlice = createSlice({
         console.log("Creating new user...");
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
+        state.usersCount = action.payload.response.dataCount;
+        console.log("Data count in number ", state.usersCount);
+
         console.log(
           "New user created, dbUsers ",
           action.payload.response.response

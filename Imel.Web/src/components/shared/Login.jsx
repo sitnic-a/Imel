@@ -25,12 +25,16 @@ export const Login = () => {
       dispatch(login(request)).then((data) => {
         let payload = data.payload;
         if (payload.statusCode === 200) {
+          document.querySelector(".credentials-error").style.display = "block";
           sessionStorage.setItem("token", payload.response.jwToken);
           navigate("/dashboard", {
             state: {
               loggedUser: payload.response,
             },
           });
+        }
+        if (payload.statusCode !== 200) {
+          document.querySelector(".credentials-error").style.display = "block";
         }
       });
     }
@@ -46,6 +50,9 @@ export const Login = () => {
       <div className="login-container">
         <form className="login-form" onSubmit={handleSubmit}>
           <FormFields errors={errors} />
+          <p className="credentials-error error-field">
+            Incorrect credentials, try again
+          </p>
 
           <div className="wrapper login-actions">
             <button type="submit" className="submit">
