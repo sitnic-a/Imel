@@ -7,7 +7,7 @@ import { closeConfirmModal } from "../../helpers/shared-helpers";
 
 export const Confirmation = ({ id }) => {
   let dispatch = useDispatch();
-  let { dbUser, usersCount } = useSelector((store) => store.user);
+  let { dbUser } = useSelector((store) => store.user);
   let { isModalDeleteUserOpen } = useSelector((store) => store.modal);
 
   return (

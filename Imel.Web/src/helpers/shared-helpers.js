@@ -1,5 +1,4 @@
 export const displayConfirmationContainer = (element) => {
-  // console.log("Element ", element);
   hideOpenedConfirmationContainers();
   element.style.display = "block";
 };
@@ -12,6 +11,5 @@ export const hideOpenedConfirmationContainers = () => {
 };
 
 export const closeConfirmModal = (element) => {
-  console.log("Element ", element);
   element.style.display = "none";
 };

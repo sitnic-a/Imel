@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
-import { FaPlus } from "react-icons/fa6";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { setPaginationParams } from "../../redux-toolkit/features/paginationSlice";
 import { UserDataGridView } from "./UserDataGridView";
 import { FilterUsers } from "./FilterUsers";
-import { setPaginationParams } from "../../redux-toolkit/features/paginationSlice";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { FaPlus } from "react-icons/fa6";
 
 export const UsersPreview = () => {
   let dispatch = useDispatch();

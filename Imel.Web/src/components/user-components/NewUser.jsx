@@ -1,13 +1,12 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addNewUser } from "../../redux-toolkit/features/userSlice";
+import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 import { verifyEnteredFields } from "../../utils";
 import { Errors } from "../shared/Errors";
-import { useDispatch, useSelector } from "react-redux";
-import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 
 export const NewUser = () => {
   let dispatch = useDispatch();
-  let { usersCount } = useSelector((store) => store.user);
   let { isModalNewUserOpen } = useSelector((store) => store.modal);
   let [errors, setErrors] = useState([]);
 
