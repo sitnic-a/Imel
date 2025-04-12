@@ -5,6 +5,11 @@ import { MdModeEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
 import { Confirmation } from "../shared/Confirmation";
+import {
+  closeConfirmModal,
+  displayConfirmationContainer,
+} from "../../helpers/shared-helpers";
+import { openDeleteUserModal } from "../../redux-toolkit/features/modalSlice";
 
 export const UserDataGridView = () => {
   let dispatch = useDispatch();
@@ -12,6 +17,7 @@ export const UserDataGridView = () => {
   let { loggedUser } = fetchLocationStateHook();
   let { paginationParams } = useSelector((store) => store.pagination);
   let { dbUsers, usersCount } = useSelector((store) => store.user);
+  let { isModalDeleteUserOpen } = useSelector((store) => store.modal);
   let lastPage = parseInt(usersCount / paginationParams.elementsPerPage);
 
   let query = {
@@ -64,7 +70,25 @@ export const UserDataGridView = () => {
                     />
                   </span>
                   <span>
-                    <MdDelete className="action delete" />
+                    <MdDelete
+                      className="action delete"
+                      onClick={(e) => {
+                        let colActions = e.currentTarget.parentNode.parentNode;
+                        let col = colActions.parentNode;
+                        let confirmModal = col.querySelector("#confirmation");
+                        dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
+                        if (isModalDeleteUserOpen === false) {
+                          dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
+                          displayConfirmationContainer(confirmModal);
+                          return;
+                        }
+                        if (isModalDeleteUserOpen === true) {
+                          dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
+                          closeConfirmModal(confirmModal);
+                          return;
+                        }
+                      }}
+                    />
                   </span>
                 </div>
                 <Confirmation />

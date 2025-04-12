@@ -330,6 +330,10 @@ body {
   color: #ff8c00;
 }
 
+.col-actions .action:active {
+  color: #ff8c00;
+}
+
 #existing-user {
   max-width: 700px;
   height: 90vh;
@@ -389,8 +393,7 @@ body {
 }
 
 #confirmation {
-  display: block;
-  opacity: 0;
+  display: none;
   float: right;
   margin-right: 0.7rem;
   max-width: 150px;
@@ -400,6 +403,8 @@ body {
 
 #confirmation header {
   text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 #confirmation .actions {

@@ -21,12 +21,6 @@ export const modalSlice = createSlice({
     },
     openDeleteUserModal: (state, action) => {
       state.isModalDeleteUserOpen = action.payload;
-
-      if (state.isModalDeleteUserOpen == true) {
-        document.querySelector(".col-actions").style.opacity = 0;
-        return;
-      }
-      document.querySelector(".col-actions").style.opacity = 1;
     },
   },
 });

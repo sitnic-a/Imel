@@ -3,13 +3,16 @@ import { RxCrossCircled } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { openDeleteUserModal } from "../../redux-toolkit/features/modalSlice";
 import { deleteById } from "../../redux-toolkit/features/userSlice";
+import { closeConfirmModal } from "../../helpers/shared-helpers";
 
 export const Confirmation = ({ id }) => {
   let dispatch = useDispatch();
+  let { isModalDeleteUserOpen } = useSelector((store) => store.modal);
 
   return (
     <section id="confirmation" className="confirmation">
       <header>Sigurni ste?</header>
+      <hr />
       <div className="actions">
         <div className="confirm">
           <span>
@@ -25,7 +28,12 @@ export const Confirmation = ({ id }) => {
           <span>
             <RxCrossCircled
               className="confirmation-choice reject-icon"
-              onClick={() => {}}
+              onClick={(e) => {
+                let rejectContainer = e.currentTarget.parentNode.parentNode;
+                let confirmModal = rejectContainer.parentNode.parentNode;
+                closeConfirmModal(confirmModal);
+                dispatch(openDeleteUserModal(!isModalDeleteUserOpen));
+              }}
             />
           </span>
         </div>
