@@ -30,8 +30,19 @@ export const NewUser = () => {
       };
       dispatch(addNewUser(request)).then((data) => {
         let payload = data.payload.response;
-        console.log("payload ", payload);
+        console.log("Payload ", data.payload);
 
+        if (data.payload.statusCode === 400) {
+          document.querySelector(".indatabase").innerHTML =
+            "User already registered or something else gone wrong!";
+          return;
+        }
+
+        if (data.payload.statusCode === 201) {
+          document.querySelector(".indatabase").innerHTML = "";
+        }
+
+        console.log("payload ", payload);
         if (payload.dataCount % 5 === 1) window.location.reload();
       });
       dispatch(openNewUserModal(!isModalNewUserOpen));

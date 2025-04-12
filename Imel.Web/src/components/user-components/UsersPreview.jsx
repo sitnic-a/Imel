@@ -92,6 +92,7 @@ export const UsersPreview = () => {
       </div>
 
       <UserDataGridView />
+      <p className="indatabase error-field"></p>
     </section>
   );
 };

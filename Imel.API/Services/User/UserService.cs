@@ -110,20 +110,29 @@ namespace Imel.API.Services.User
             try
             {
                 const int __USER_ROLE_ = 2;
+                var query = new QueryUsers();
+                var paginationParams = new PaginationParams();
+                var users = new ResponseObject();
                 if (request != null)
                 {
                     if (request.Roles.Any(r => r == __USER_ROLE_))
                     {
                         RegisterDto newUser = new RegisterDto(request.Email, request?.Password, request?.Roles);
                         var createdUser = await _authService.Register(newUser);
+
+                        if (createdUser.StatusCode == 400)
+                        {
+                            users = await Get(query, paginationParams); 
+                            _userLogger.LogWarning("ADD-NEW-USER: User is in database", [createdUser]);
+                            return new ResponseObject(users, StatusCodes.Status400BadRequest, "ADD-NEW-USER: User is in database");
+                        }
+
                         if (createdUser == null)
                         {
                             _userLogger.LogWarning("ADD-NEW-USER: New user is not created!", [createdUser]);
                             return new ResponseObject(createdUser, StatusCodes.Status204NoContent, "ADD-NEW-USER: New user is not created!");
                         }
-                        var query = new QueryUsers();
-                        var paginationParams = new PaginationParams();
-                        var users = await Get(query, paginationParams);
+                         users = await Get(query, paginationParams);
                         _userLogger.LogInformation("ADD-NEW-USER: Succesfully created user", [users]);
                         return new ResponseObject(users, StatusCodes.Status201Created, "ADD-NEW-USER: Succesfully created user");
                     }

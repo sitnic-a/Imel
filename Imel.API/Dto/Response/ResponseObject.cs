@@ -8,6 +8,8 @@
 
         public int? DataCount { get; set; }
 
+        public ResponseObject(){}
+
         public ResponseObject(object response, int statusCode, string message, int?dataCount = null)
         {
             Response = response;
