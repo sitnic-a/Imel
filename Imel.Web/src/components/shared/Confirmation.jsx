@@ -7,6 +7,7 @@ import { closeConfirmModal } from "../../helpers/shared-helpers";
 
 export const Confirmation = ({ id }) => {
   let dispatch = useDispatch();
+  let { dbUser } = useSelector((store) => store.user);
   let { isModalDeleteUserOpen } = useSelector((store) => store.modal);
 
   return (
@@ -19,7 +20,7 @@ export const Confirmation = ({ id }) => {
             <IoIosCheckmarkCircle
               className="confirmation-choice confirm-icon"
               onClick={() => {
-                // dispatch(deleteById[]);
+                dispatch(deleteById([dbUser.id]));
               }}
             />
           </span>

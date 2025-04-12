@@ -3,6 +3,7 @@ import { application } from "../../application";
 
 let initialState = {
   dbUsers: [],
+  dbUser: null,
   usersCount: 0,
 };
 
@@ -89,7 +90,11 @@ export const deleteById = createAsyncThunk("user/delete/{id}", async ([id]) => {
 export const userSlice = createSlice({
   initialState,
   name: "userSlice",
-  reducers: {},
+  reducers: {
+    setDbUser: (state, action) => {
+      state.dbUser = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -151,12 +156,15 @@ export const userSlice = createSlice({
         console.log("Deleting user...");
       })
       .addCase(deleteById.fulfilled, (state, action) => {
-        console.log("After deletion result ", action.payload);
+        console.log("After deletion result ", action.payload.response.response);
+        state.dbUsers = action.payload.response.response;
       })
       .addCase(deleteById.rejected, (state, action) => {
         console.log("Delete rejected ", action.payload);
       });
   },
 });
+
+export const { setDbUser } = userSlice.actions;
 
 export default userSlice.reducer;

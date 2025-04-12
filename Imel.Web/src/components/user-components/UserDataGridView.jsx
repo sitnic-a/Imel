@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../redux-toolkit/features/userSlice";
+import { getUsers, setDbUser } from "../../redux-toolkit/features/userSlice";
 import { MdModeEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
@@ -73,6 +73,7 @@ export const UserDataGridView = () => {
                     <MdDelete
                       className="action delete"
                       onClick={(e) => {
+                        dispatch(setDbUser(dbUser));
                         let colActions = e.currentTarget.parentNode.parentNode;
                         let col = colActions.parentNode;
                         let confirmModal = col.querySelector("#confirmation");

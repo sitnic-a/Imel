@@ -137,9 +137,6 @@ namespace Imel.API.Services.User
                 return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"ADD-NEW-USER: {e.Message}");
             }
         }
-
-
-
         public async Task<ResponseObject> UpdateUser(int id, UpdateUser request)
         {
             try
@@ -171,6 +168,37 @@ namespace Imel.API.Services.User
             {
                 _userLogger.LogWarning($"UPDATE: {e.Message}", [e]);
                 return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"UPDATE: {e.Message}");
+            }
+        }
+
+        public async Task<ResponseObject> DeleteById(int id)
+        {
+            try
+            {
+                if (id <= 0)
+                {
+                    _userLogger.LogWarning("DELETE/{id}: Bad request, params", [id]);
+                    return new ResponseObject(id, StatusCodes.Status400BadRequest, "DELETE/{id}: Bad request, params");
+                }
+                var dbUser = await _context.Users.FindAsync(id);
+                if (dbUser == null)
+                {
+                    _userLogger.LogWarning("DELETE/{id}: User not available", [dbUser]);
+                    return new ResponseObject(dbUser, StatusCodes.Status404NotFound, "DELETE/{id}: User not available");
+                }
+
+                _context.Users.Remove(dbUser);
+                await _context.SaveChangesAsync();
+                var query = new QueryUsers();
+                var paginationParams = new PaginationParams();
+                var users = await Get(query, paginationParams);
+                _userLogger.LogInformation("DELETE/{id}: Successfully deleted", [dbUser]);
+                return new ResponseObject(users, StatusCodes.Status200OK, "DELETE/{id}: Successfully deleted", users.DataCount);
+            }
+            catch (Exception e )
+            {
+                _userLogger.LogError($"DELETE/{id}: {e.Message}", [e]);
+                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"DELETE/{id}: {e.Message}");
             }
         }
     }

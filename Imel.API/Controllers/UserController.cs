@@ -40,5 +40,11 @@ namespace Imel.API.Controllers
         {
             return await _userService.UpdateUser(id, request);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ResponseObject> DeleteById(int id)
+        {
+            return await _userService.DeleteById(id);
+        }
     }
 }
