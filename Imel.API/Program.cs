@@ -1,6 +1,7 @@
 using Imel.API;
 using Imel.API.Configuration;
 using Imel.API.Services.Auth;
+using Imel.API.Services.Export;
 using Imel.API.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddTransient<IAuthService,AuthService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IExportService, ExportService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
