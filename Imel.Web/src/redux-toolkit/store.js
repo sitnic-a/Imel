@@ -3,6 +3,7 @@ import authReducer from "./features/authSlice";
 import userReducer from "./features/userSlice";
 import modalReducer from "./features/modalSlice";
 import paginationReducer from "./features/paginationSlice";
+import exportReducer from "./features/exportSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     user: userReducer,
     modal: modalReducer,
     pagination: paginationReducer,
+    export: exportReducer,
   },
 });
 

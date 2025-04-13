@@ -1,6 +1,9 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import React, { useEffect, useReducer } from "react";
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { getUsersReadyToExport } from "../../redux-toolkit/features/exportSlice";
+import { application } from "../../application";
 
 let styles = StyleSheet.create({
   body: {
@@ -116,135 +119,34 @@ let styles = StyleSheet.create({
 });
 
 const PdfAssistant = () => {
+  //   let dispatch = useDispatch();
+  let [users, setUsers] = useState([]);
   let todaysDate = moment().format("MMMM DD, YYYY");
+  //   let { dbUsers } = useSelector((store) => store.export);
 
-  let users = [
-    {
-      id: 1,
-      email: "admir@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 2,
-      email: "adm@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 3,
-      email: "admirrr@gmail.com",
-      status: "Neaktivan",
-    },
-    {
-      id: 4,
-      email: "dijana@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 5,
-      email: "admir@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 6,
-      email: "adm@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 7,
-      email: "admirrr@gmail.com",
-      status: "Neaktivan",
-    },
-    {
-      id: 8,
-      email: "dijana@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 9,
-      email: "admir@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 10,
-      email: "adm@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 11,
-      email: "admirrr@gmail.com",
-      status: "Neaktivan",
-    },
-    {
-      id: 12,
-      email: "dijana@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 13,
-      email: "admir@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 14,
-      email: "adm@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 15,
-      email: "admirrr@gmail.com",
-      status: "Neaktivan",
-    },
-    {
-      id: 16,
-      email: "dijana@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 17,
-      email: "admir@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 18,
-      email: "adm@gmail.com",
-      status: "Aktivan",
-    },
-    {
-      id: 19,
-      email: "admirrr@gmail.com",
-      status: "Neaktivan",
-    },
-    {
-      id: 20,
-      email: "dijana@gmail.com",
-      status: "Aktivan",
-    },
-  ];
+  useEffect(() => {
+    let fetchUsers = async () => {
+      let request = await fetch(`${application.url}/export/`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      let response = await request.json().then((data) => {
+        console.log("Data RSP ", data);
+        setUsers(data.response);
+      });
+    };
 
-  const Rows = () => {
-    var rows = users.map((user) => (
-      <View key={user.id} style={styles.users.mainList}>
-        <View style={styles.users.mainList.userContainer}>
-          <Text style={styles.users.mainList.userContainer.email}>
-            {user.email}
-          </Text>
-          <Text style={styles.users.mainList.userContainer.status}>
-            {user.status}
-          </Text>
-        </View>
-      </View>
-    ));
-    return (
-      <View>
-        <View style={styles.users.header}>
-          <Text style={styles.users.header.emailCol}>Email</Text>
-          <Text style={styles.users.header.statusCol}>Status</Text>
-        </View>
+    fetchUsers();
+  }, []);
 
-        {rows}
-      </View>
-    );
-  };
+  //   const Rows = () => {
+  //     // var rows =
+
+  //     return (
+
+  //     );
+  //   };
 
   return (
     <Document>
@@ -263,7 +165,28 @@ const PdfAssistant = () => {
             za pregledanje
           </Text>
         </View>
-        <Rows />
+
+        <>
+          <View>
+            <View style={styles.users.header}>
+              <Text style={styles.users.header.emailCol}>Email</Text>
+              <Text style={styles.users.header.statusCol}>Status</Text>
+            </View>
+
+            {users.map((user) => (
+              <View key={user.id} style={styles.users.mainList}>
+                <View style={styles.users.mainList.userContainer}>
+                  <Text style={styles.users.mainList.userContainer.email}>
+                    {user.email}
+                  </Text>
+                  <Text style={styles.users.mainList.userContainer.status}>
+                    {user.statusAsString}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </>
 
         <Text
           style={styles.pageNumber}

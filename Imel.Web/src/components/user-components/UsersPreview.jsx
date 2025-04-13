@@ -12,7 +12,7 @@ import moment from "moment";
 export const UsersPreview = () => {
   let dispatch = useDispatch();
   let todaysDate = moment().format("MMMM DD, YYYY");
-  let fileName = `Imel-Korisnici-${todaysDate}`;
+  let fileName = `Imel-Korisnici-${todaysDate}.pdf`;
 
   const [instance, updateInstance] = usePDF({ document: <PdfAssistant /> });
 
