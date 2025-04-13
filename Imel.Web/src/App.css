@@ -185,7 +185,25 @@ body {
   text-align: center;
 }
 
+.export-to-pdf-btn {
+  background: #ededed;
+  padding: 0.8rem;
+  float: right;
+  margin-bottom: 0.5rem;
+  border-radius: 0.3rem;
+  text-decoration-line: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+
+.export-to-pdf-btn:hover {
+  background: #d3d3d3;
+  box-shadow: 2px 2px 8px #9191dc;
+}
+
 .pagination {
+  clear: both;
   min-height: 40px;
   margin-bottom: 1rem;
   border: 1px solid #cfcfcf;

@@ -8,7 +8,6 @@ import { Dashboard } from "./components/shared/Dashboard";
 import { RequireAuth } from "./components/shared/RequireAuth";
 import "./App.css";
 import { UpdateUser } from "./components/user-components/UpdateUser";
-import PdfAssistant from "./components/lib/PdfAssistant";
 
 function App() {
   return (

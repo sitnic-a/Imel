@@ -6,19 +6,15 @@ import { UserDataGridView } from "./UserDataGridView";
 import { FilterUsers } from "./FilterUsers";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
-import PdfAssistant from "../lib/PdfAssistant";
+import PdfAssistant from "../lib/export-pdf/PdfAssistant";
 import moment from "moment";
 
 export const UsersPreview = () => {
   let dispatch = useDispatch();
-  let todaysDate = moment().format("MMMM DD, YYYY");
+  let todaysDate = moment().format("MMMM DD, YYYY-hh:mm");
   let fileName = `Imel-Korisnici-${todaysDate}.pdf`;
 
   const [instance, updateInstance] = usePDF({ document: <PdfAssistant /> });
-
-  // if (instance.loading) return <div>Loading ...</div>;
-
-  // if (instance.error) return <div>Something went wrong: {instance.error}</div>;
 
   let { usersCount } = useSelector((store) => store.user);
   let { paginationParams } = useSelector((store) => store.pagination);
@@ -48,15 +44,13 @@ export const UsersPreview = () => {
             "scroll"
           </i>
         </p>
-        <p>
-          <a
-            className=".export-to-pdf-btn"
-            href={instance.url}
-            download={fileName}
-          >
-            Izvezi u PDF
-          </a>
-        </p>
+        <a
+          className="export-to-pdf-btn"
+          href={instance.url}
+          download={fileName}
+        >
+          Izvezi u PDF
+        </a>
       </header>
 
       <div className="pagination">
