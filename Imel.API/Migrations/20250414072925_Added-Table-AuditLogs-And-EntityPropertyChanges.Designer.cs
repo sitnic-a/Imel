@@ -4,6 +4,7 @@ using Imel.API;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Imel.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250414072925_Added-Table-AuditLogs-And-EntityPropertyChanges")]
+    partial class AddedTableAuditLogsAndEntityPropertyChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace Imel.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("Imel.API.Models.Audit.EntityPropertyChange", b =>
@@ -86,7 +89,7 @@ namespace Imel.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EntityPropertyChanges", (string)null);
+                    b.ToTable("EntityPropertyChanges");
                 });
 
             modelBuilder.Entity("Imel.API.Models.Role", b =>
@@ -109,7 +112,7 @@ namespace Imel.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -159,7 +162,7 @@ namespace Imel.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Imel.API.Models.UserRole", b =>
@@ -174,7 +177,7 @@ namespace Imel.API.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Imel.API.Models.UserRole", b =>
