@@ -4,6 +4,7 @@ import userReducer from "./features/userSlice";
 import modalReducer from "./features/modalSlice";
 import paginationReducer from "./features/paginationSlice";
 import exportReducer from "./features/exportSlice";
+import auditReducer from "./features/auditSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     modal: modalReducer,
     pagination: paginationReducer,
     export: exportReducer,
+    audit: auditReducer,
   },
 });
 

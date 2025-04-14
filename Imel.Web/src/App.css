@@ -460,3 +460,99 @@ body {
 .reject-icon:hover {
   color: rgb(97, 0, 0);
 }
+
+#logs {
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+@media (width<=730px) {
+  #logs {
+    margin-inline: 1rem;
+  }
+}
+
+@media (width<=580px) {
+  .role-thead {
+    display: none;
+  }
+
+  .original-thead {
+    display: none;
+  }
+
+  .new-thead {
+    display: none;
+  }
+
+  .role {
+    display: none;
+  }
+
+  .original {
+    display: none;
+  }
+
+  .new {
+    display: none;
+  }
+}
+
+#logs header {
+  max-width: 600px;
+  margin-inline: auto;
+  margin-bottom: 3rem;
+}
+
+#logs header h1 {
+  text-align: center;
+}
+
+.subtitle {
+  max-width: 590px;
+  margin: 0;
+  text-align: justify;
+}
+
+.subtitle:nth-child(3) {
+  /* background: yellow; */
+  margin-top: 0.8rem;
+}
+
+.log-table {
+  max-width: 900px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tbody {
+  width: auto;
+}
+
+.log-container {
+  /* border: 0.3px solid red; */
+  border-left: none;
+  border-right: none;
+}
+
+.log-container:nth-child(even) {
+  background: #f1f1f1;
+}
+
+.log-value {
+  text-align: center;
+  padding: 0.4rem 0;
+}
+
+@media (width <= 590px) {
+  .log-value {
+    font-size: 0.95rem;
+    padding: 0.3rem 0;
+  }
+}
+
+@media (width <= 360px) {
+  .log-value {
+    font-size: 0.87rem;
+  }
+}

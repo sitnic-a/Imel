@@ -8,6 +8,7 @@ import { Dashboard } from "./components/shared/Dashboard";
 import { RequireAuth } from "./components/shared/RequireAuth";
 import "./App.css";
 import { UpdateUser } from "./components/user-components/UpdateUser";
+import { LogPreview } from "./components/sensitive-data/LogPreview";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route element={<RequireAuth />}>
               <Route path="/dashboard" element={<Dashboard />}></Route>
               <Route path="user/:id" element={<UpdateUser />}></Route>
+              <Route path="/audit/master/logs" element={<LogPreview />}></Route>
             </Route>
           </Routes>
         </Router>
