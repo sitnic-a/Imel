@@ -23,6 +23,11 @@ builder.Services.AddDbContext<DataContext>(options =>
         .GetConnectionString("ImelConn"));
 });
 
+//HttpContextAccessor
+builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+
+
+
 //Automapper
 builder.Services.AddAutoMapper(typeof(Program));
 
