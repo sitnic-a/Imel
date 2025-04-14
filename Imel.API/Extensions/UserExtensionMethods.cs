@@ -1,5 +1,5 @@
 ﻿using Azure.Core;
-using Imel.API.Dto.Request;
+using Imel.API.Dto.Request.Query;
 using Imel.API.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;

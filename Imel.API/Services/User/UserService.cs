@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Imel.API.Dto.Request;
+using Imel.API.Dto.Request.Query;
 using Imel.API.Dto.Response;
 using Imel.API.Extensions;
 using Imel.API.Models;
@@ -49,7 +50,7 @@ namespace Imel.API.Services.User
             catch (Exception e)
             {
                 _userLogger.LogInformation($"GET/{id}: {e.Message}", [e]);
-                return new ResponseObject(e, StatusCodes.Status200OK, $"GET/{id}: {e.Message}");
+                return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"GET/{id}: {e.Message}");
             }
         }
 

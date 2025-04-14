@@ -1,5 +1,6 @@
 using Imel.API;
 using Imel.API.Configuration;
+using Imel.API.Services.Audit;
 using Imel.API.Services.Auth;
 using Imel.API.Services.Export;
 using Imel.API.Services.User;
@@ -34,8 +35,10 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddTransient<IAuthService,AuthService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IExportService, ExportService>();
+builder.Services.AddTransient<IAuditService,AuditService>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
