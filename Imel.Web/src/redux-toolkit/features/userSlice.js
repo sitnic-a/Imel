@@ -10,11 +10,13 @@ let initialState = {
 export const getById = createAsyncThunk(
   "user/get/{id}",
   async (requestObject) => {
+    let token = sessionStorage.getItem("token");
     let url = `${application.url}/user/${requestObject.id}`;
     let request = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     let response = await request.json();
@@ -25,6 +27,7 @@ export const getById = createAsyncThunk(
 export const getUsers = createAsyncThunk(
   "/users",
   async ([query, paginationParams]) => {
+    let token = sessionStorage.getItem("token");
     console.log("Search query ", query, "Pagination params ", paginationParams);
     let url = `${application.url}/user?elementsPerPage=${paginationParams.elementsPerPage}&currentPage=${paginationParams.currentPage}`;
     let request = await fetch(url, {
@@ -32,6 +35,7 @@ export const getUsers = createAsyncThunk(
       body: JSON.stringify(query),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     let response = await request.json();
@@ -42,6 +46,7 @@ export const getUsers = createAsyncThunk(
 export const addNewUser = createAsyncThunk(
   "/user/create",
   async (requestObject) => {
+    let token = sessionStorage.getItem("token");
     console.log("Sending user ", requestObject);
     let url = `${application.url}/user/add`;
     let request = await fetch(url, {
@@ -49,6 +54,7 @@ export const addNewUser = createAsyncThunk(
       body: JSON.stringify(requestObject),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     let response = await request.json();
@@ -59,6 +65,7 @@ export const addNewUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   "user/update/{id}",
   async ([id, requestObject]) => {
+    let token = sessionStorage.getItem("token");
     console.log("Id", id, "Update user request object ", requestObject);
     let url = `${application.url}/user/${id}`;
     let request = await fetch(url, {
@@ -66,6 +73,7 @@ export const updateUser = createAsyncThunk(
       body: JSON.stringify(requestObject),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     let response = await request.json();
@@ -75,12 +83,14 @@ export const updateUser = createAsyncThunk(
 
 export const deleteById = createAsyncThunk("user/delete/{id}", async ([id]) => {
   console.log("User to delete ", id);
+  let token = sessionStorage.getItem("token");
 
   let url = `${application.url}/user/${id}`;
   let request = await fetch(url, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
   let response = await request.json();
