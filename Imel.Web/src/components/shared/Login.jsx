@@ -1,21 +1,24 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux-toolkit/features/authSlice";
 import { verifyLoginCredentials } from "../../utils";
 import { FormFields } from "./FormFields";
 import { useNavigate } from "react-router-dom";
+import { setErrors } from "../../redux-toolkit/features/userSlice";
 
 export const Login = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  let [errors, setErrors] = useState([]);
+  let { errors } = useSelector((store) => store.user);
+
+  // let [errors, setErrors] = useState([]);
 
   let handleSubmit = (e) => {
     e.preventDefault();
     let form = new FormData(e.target);
     let formData = Object.fromEntries([...form.entries()]);
     let [errors, isValid] = verifyLoginCredentials(formData);
-    setErrors(errors);
+    dispatch(setErrors(errors));
     if (isValid) {
       let request = {
         email: formData["email"],
@@ -23,8 +26,10 @@ export const Login = () => {
       };
       dispatch(login(request)).then((data) => {
         let payload = data.payload;
+        let credentialError = document.querySelector(".credentials-error");
+
         if (payload.statusCode === 200) {
-          document.querySelector(".credentials-error").style.display = "block";
+          credentialError.style.display = "block";
           sessionStorage.setItem("token", payload.response.jwToken);
           navigate("/dashboard", {
             state: {
@@ -33,7 +38,7 @@ export const Login = () => {
           });
         }
         if (payload.statusCode !== 200) {
-          document.querySelector(".credentials-error").style.display = "block";
+          credentialError.style.display = "block";
         }
       });
     }

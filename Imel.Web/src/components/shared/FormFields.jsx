@@ -1,6 +1,11 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Errors } from "./Errors";
+import { setErrors } from "../../redux-toolkit/features/userSlice";
 
-export const FormFields = ({ errors }) => {
+export const FormFields = () => {
+  let dispatch = useDispatch();
+  let { errors } = useSelector((store) => store.user);
+
   return (
     <>
       <div className="wrapper email">
@@ -9,6 +14,14 @@ export const FormFields = ({ errors }) => {
         </label>
         <br />
         <input
+          onFocus={() => {
+            dispatch(setErrors([]));
+            let credentialError = document.querySelector(".credentials-error");
+            if (credentialError !== undefined) {
+              if (credentialError.style.display === "block")
+                credentialError.style.display = "none";
+            }
+          }}
           className="form-field"
           type="text"
           name="email"
@@ -22,6 +35,9 @@ export const FormFields = ({ errors }) => {
         </label>
         <br />
         <input
+          onFocus={() => {
+            if (errors.length > 0) dispatch(setErrors([]));
+          }}
           className="form-field"
           type="password"
           name="password"

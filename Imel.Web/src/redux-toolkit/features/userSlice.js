@@ -5,6 +5,7 @@ let initialState = {
   dbUsers: [],
   dbUser: null,
   usersCount: 0,
+  errors: [],
 };
 
 export const getById = createAsyncThunk(
@@ -101,6 +102,9 @@ export const userSlice = createSlice({
   initialState,
   name: "userSlice",
   reducers: {
+    setErrors: (state, action) => {
+      state.errors = action.payload;
+    },
     setDbUser: (state, action) => {
       state.dbUser = action.payload;
     },
@@ -178,6 +182,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setDbUser } = userSlice.actions;
+export const { setDbUser, setErrors } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux-toolkit/features/authSlice";
 import { verifyEnteredFields } from "../../utils";
 import { FormFields } from "./FormFields";
+import { setErrors } from "../../redux-toolkit/features/userSlice";
 
 export const Register = () => {
   let dispatch = useDispatch();
-  let [errors, setErrors] = useState([]);
+  // let [errors, setErrors] = useState([]);
+  let { errors } = useSelector((store) => store.user);
 
   let handleSubmit = (e) => {
     let __USER_ROLE = 2;
@@ -14,7 +16,8 @@ export const Register = () => {
     let form = new FormData(e.target);
     let formData = Object.fromEntries([...form.entries()]);
     let [errors, isValid] = verifyEnteredFields(formData);
-    setErrors(errors);
+    dispatch(setErrors(errors));
+    // setErrors(errors);
     if (isValid) {
       let request = {
         email: formData["email"],

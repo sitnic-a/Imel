@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getById, updateUser } from "../../redux-toolkit/features/userSlice";
+import {
+  getById,
+  setErrors,
+  updateUser,
+} from "../../redux-toolkit/features/userSlice";
 import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
 import { verifyEnteredFields } from "../../utils";
 import { Errors } from "../shared/Errors";
@@ -9,7 +13,7 @@ import { Errors } from "../shared/Errors";
 export const UpdateUser = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  let [errors, setErrors] = useState([]);
+  let { errors } = useSelector((store) => store.user);
   let [email, setEmail] = useState("");
   let { id } = useParams();
   let { loggedUser } = fetchLocationStateHook();
@@ -37,7 +41,7 @@ export const UpdateUser = () => {
       status: statusValue,
     };
     let [errors, isValid] = verifyEnteredFields(requestObject);
-    setErrors(errors);
+    dispatch(setErrors(errors));
     if (isValid) {
       dispatch(updateUser([id, requestObject])).then((data) => {
         if (data.payload.statusCode === 200) {
@@ -85,6 +89,7 @@ export const UpdateUser = () => {
             className="form-field email"
             placeholder="Unesite novu email adresu"
             value={email}
+            onFocus={() => dispatch(setErrors([]))}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>

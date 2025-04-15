@@ -1,14 +1,13 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewUser } from "../../redux-toolkit/features/userSlice";
+import { addNewUser, setErrors } from "../../redux-toolkit/features/userSlice";
 import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 import { verifyEnteredFields } from "../../utils";
 import { Errors } from "../shared/Errors";
 
 export const NewUser = () => {
   let dispatch = useDispatch();
+  let { errors } = useSelector((store) => store.user);
   let { isModalNewUserOpen } = useSelector((store) => store.modal);
-  let [errors, setErrors] = useState([]);
 
   let handleSubmit = (e) => {
     e.preventDefault();
@@ -17,8 +16,7 @@ export const NewUser = () => {
     console.log("Form data ", formData);
 
     let [errors, isValid] = verifyEnteredFields(formData);
-    console.log("Errors ", errors);
-    setErrors(errors);
+    dispatch(setErrors(errors));
     if (isValid) {
       //Call service to add new user
       // Hardcoded value for password since user will have a possibility to change it's password
@@ -70,6 +68,7 @@ export const NewUser = () => {
             </label>
             <br />
             <input
+              onFocus={() => dispatch(setErrors([]))}
               className="form-field"
               type="text"
               name="email"

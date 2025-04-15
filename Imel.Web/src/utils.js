@@ -7,8 +7,10 @@ export const verifyEnteredFields = (data) => {
   let regexp_email = /^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (data.email !== undefined) {
-    if (!data?.email.match(regexp_email)) {
+    if (data.email.length <= 0) {
       errors.push("Email adresa je obavezno polje!");
+    }
+    if (!data?.email.match(regexp_email)) {
       errors.push(
         "Email adresa nije validna, probajte nešto poput (test@test.com)"
       );
@@ -59,4 +61,8 @@ export const verifyLoginCredentials = (data) => {
   }
   isValid = true;
   return [errors, isValid];
+};
+
+export const setErrors = (errors) => {
+  return errors;
 };
