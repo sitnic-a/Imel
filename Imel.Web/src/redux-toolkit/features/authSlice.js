@@ -3,6 +3,8 @@ import { application } from "../../application";
 
 let initialState = {
   loggedUser: null,
+  isRegistering: false,
+  isLogging: false,
 };
 
 //register user
@@ -42,12 +44,15 @@ export const authSlice = createSlice({
       //register
       .addCase(register.pending, (state, action) => {
         console.log("Pending");
+        state.isRegistering = true;
       })
       .addCase(register.fulfilled, (state, action) => {
         console.log("Action payload ", action.payload);
+        state.isRegistering = false;
       })
       .addCase(register.rejected, (state, action) => {
         console.log("Rejected ", action.payload);
+        state.isRegistering = false;
       })
 
       //login
