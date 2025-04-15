@@ -614,6 +614,12 @@ tbody {
 @media (width <= 590px) {
   .log-value {
     font-size: 0.95rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
+@media (width <= 400px) {
+  .log-value {
     padding: 0.3rem 0;
   }
 }
