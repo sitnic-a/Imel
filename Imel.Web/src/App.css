@@ -524,6 +524,11 @@ body {
   color: rgb(97, 0, 0);
 }
 
+.main-logs {
+  max-height: 580px;
+  overflow-y: scroll;
+}
+
 #logs {
   max-width: 900px;
   max-height: 600px;
