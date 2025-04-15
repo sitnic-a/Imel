@@ -49,7 +49,7 @@ export const LogPreview = () => {
                   <td className="log-value role">{log.role}</td>
                   <td className="log-value method">{log.method}</td>
                   <td className="log-value original">{log.originalValue}</td>
-                  <td className="log-value new">{log.newValue}</td>
+                  <td className="log-value new">{log.currentValue}</td>
                   <td className="log-value logged-as-string">{date}</td>
                 </tr>
               );
