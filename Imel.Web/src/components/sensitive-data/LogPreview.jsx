@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuditLogs } from "../../redux-toolkit/features/auditSlice";
 import moment from "moment";
+import { Loader } from "../shared/Loader";
 
 export const LogPreview = () => {
   let dispatch = useDispatch();
-  let { logs } = useSelector((store) => store.audit);
+  let { logs, isLoading } = useSelector((store) => store.audit);
   let { paginationParams } = useSelector((store) => store.pagination);
 
   let query = null;
@@ -14,7 +15,9 @@ export const LogPreview = () => {
     dispatch(getAuditLogs([query, paginationParams]));
   }, []);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <section id="logs">
       <header>
         <h1>Audit log list</h1>

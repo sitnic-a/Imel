@@ -3,6 +3,7 @@ import { application } from "../../application";
 
 let initialState = {
   logs: [],
+  isLoading: false,
 };
 
 export const getAuditLogs = createAsyncThunk(
@@ -38,14 +39,14 @@ const auditSlice = createSlice({
 
       //get logs
       .addCase(getAuditLogs.pending, (state, action) => {
-        console.log("Fetching logs ....");
+        state.isLoading = true;
       })
       .addCase(getAuditLogs.fulfilled, (state, action) => {
-        console.log("Fetched logs ", action.payload.response);
         state.logs = action.payload.response;
+        state.isLoading = false;
       })
       .addCase(getAuditLogs.rejected, (state, action) => {
-        console.log("Fetching logs rejected ", action.payload);
+        state.isLoading = false;
       });
   },
 });

@@ -3,6 +3,7 @@ import { application } from "../../application";
 
 let initialState = {
   dbUsersToExport: [],
+  isLoading: false,
 };
 
 export const getUsersReadyToExport = createAsyncThunk(
@@ -28,14 +29,14 @@ const exportSlice = createSlice({
 
       //prepareUsersToExport
       .addCase(getUsersReadyToExport.pending, (state, action) => {
-        console.log("Getting users for export");
+        state.isLoading = true;
       })
       .addCase(getUsersReadyToExport.fulfilled, (state, action) => {
-        console.log("Data to export fetched ", action.payload.response);
         state.dbUsersToExport = action.payload.response;
+        state.isLoading = false;
       })
       .addCase(getUsersReadyToExport.rejected, (state, action) => {
-        console.log("Data to export rejected ", action.payload);
+        state.isLoading = false;
       });
   },
 });

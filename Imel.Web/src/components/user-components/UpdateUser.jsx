@@ -9,11 +9,12 @@ import {
 import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
 import { verifyEnteredFields } from "../../utils";
 import { Errors } from "../shared/Errors";
+import { Loader } from "../shared/Loader";
 
 export const UpdateUser = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  let { errors } = useSelector((store) => store.user);
+  let { errors, isLoading } = useSelector((store) => store.user);
   let [email, setEmail] = useState("");
   let { id } = useParams();
   let { loggedUser } = fetchLocationStateHook();
@@ -63,7 +64,9 @@ export const UpdateUser = () => {
     });
   });
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <section id="existing-user">
       <header>
         <h1>Trenutno se nalazite u dijelu za uređivanje korisnika</h1>

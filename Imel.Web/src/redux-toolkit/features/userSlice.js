@@ -115,76 +115,66 @@ export const userSlice = createSlice({
 
       //getById
       .addCase(getById.pending, (state, action) => {
-        console.log("Fetching user by id...");
+        state.isLoading = true;
       })
       .addCase(getById.fulfilled, (state, action) => {
-        console.log("Fetched user ", action.payload);
+        state.isLoading = false;
       })
       .addCase(getById.rejected, (state, action) => {
-        console.log("Fetch rejected ", action.payload);
+        state.isLoading = false;
       })
 
       //getUsers
       .addCase(getUsers.pending, (state, action) => {
         // console.log("Fetching users");
         state.isLoading = true;
-        console.log("Loading state ", state.isLoading);
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         // console.log("Fetched users ", action.payload);
         state.dbUsers = action.payload.response;
         state.usersCount = action.payload.dataCount;
-        console.log("Users count ", state.usersCount);
         state.isLoading = false;
-        console.log("Loading state ", state.isLoading);
       })
       .addCase(getUsers.rejected, (state, action) => {
-        console.log("Fetching rejected ", action.payload);
         state.isLoading = false;
-        console.log("Loading state ", state.isLoading);
       })
 
       //addUser
       .addCase(addNewUser.pending, (state, action) => {
-        console.log("Creating new user...");
+        state.isLoading = true;
       })
       .addCase(addNewUser.fulfilled, (state, action) => {
         state.usersCount = action.payload.response.dataCount;
-        console.log("Data count in number ", state.usersCount);
-
-        console.log(
-          "New user created, dbUsers ",
-          action.payload.response.response
-        );
         state.dbUsers = action.payload.response.response;
+        state.isLoading = false;
       })
       .addCase(addNewUser.rejected, (state, action) => {
-        console.log("Creating rejected");
+        state.isLoading = false;
       })
 
       //updateUser
       .addCase(updateUser.pending, (state, action) => {
-        console.log("Updating user... ");
+        state.isLoading = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        console.log("Updated users ", action.payload);
         state.dbUsers = action.payload.response.response;
         state.usersCount = action.payload.response.dataCount;
+        state.isLoading = false;
       })
       .addCase(updateUser.rejected, (state, action) => {
-        console.log("Update rejected", action.payload);
+        state.isLoading = false;
       })
 
       //deleteUser
       .addCase(deleteById.pending, (state, action) => {
-        console.log("Deleting user...");
+        state.isLoading = true;
       })
       .addCase(deleteById.fulfilled, (state, action) => {
-        console.log("After deletion result ", action.payload.response.response);
         state.dbUsers = action.payload.response.response;
+        state.isLoading = false;
       })
       .addCase(deleteById.rejected, (state, action) => {
-        console.log("Delete rejected ", action.payload);
+        state.isLoading = false;
       });
   },
 });

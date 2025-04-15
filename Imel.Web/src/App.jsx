@@ -9,13 +9,13 @@ import { RequireAuth } from "./components/shared/RequireAuth";
 import "./App.css";
 import { UpdateUser } from "./components/user-components/UpdateUser";
 import { LogPreview } from "./components/sensitive-data/LogPreview";
-import { Loader } from "./components/shared/Loader";
+// import { Loader } from "./components/shared/Loader";
 
 function App() {
   return (
     <Provider store={store}>
       <main>
-        <Loader />
+        {/* <Loader /> */}
         <Router>
           <Routes>
             <Route index element={<Welcome />}></Route>
