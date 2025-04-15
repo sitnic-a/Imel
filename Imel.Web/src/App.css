@@ -45,6 +45,10 @@ body {
   }
 }
 
+.existing-user-error {
+  display: none;
+}
+
 .wrapper {
   padding-block: 0.5rem;
   margin-block: 0.5rem;

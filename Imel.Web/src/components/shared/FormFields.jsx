@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Errors } from "./Errors";
 import { setErrors } from "../../redux-toolkit/features/userSlice";
+import { hideOnCondition } from "../../utils";
 
 export const FormFields = () => {
   let dispatch = useDispatch();
@@ -17,10 +18,10 @@ export const FormFields = () => {
           onFocus={() => {
             dispatch(setErrors([]));
             let credentialError = document.querySelector(".credentials-error");
-            if (credentialError !== undefined) {
-              if (credentialError.style.display === "block")
-                credentialError.style.display = "none";
-            }
+            let inDatabaseErr = document.querySelector(".existing-user-error");
+
+            hideOnCondition(credentialError);
+            hideOnCondition(inDatabaseErr);
           }}
           className="form-field"
           type="text"

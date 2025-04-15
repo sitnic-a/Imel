@@ -63,6 +63,10 @@ export const verifyLoginCredentials = (data) => {
   return [errors, isValid];
 };
 
-export const setErrors = (errors) => {
-  return errors;
+export const hideOnCondition = (element) => {
+  if (element !== null && element !== undefined) {
+    if (element.style.display === "block") {
+      element.style.display = "none";
+    }
+  }
 };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux-toolkit/features/authSlice";
 import { verifyEnteredFields } from "../../utils";
@@ -7,7 +6,6 @@ import { setErrors } from "../../redux-toolkit/features/userSlice";
 
 export const Register = () => {
   let dispatch = useDispatch();
-  // let [errors, setErrors] = useState([]);
   let { errors } = useSelector((store) => store.user);
 
   let handleSubmit = (e) => {
@@ -17,7 +15,6 @@ export const Register = () => {
     let formData = Object.fromEntries([...form.entries()]);
     let [errors, isValid] = verifyEnteredFields(formData);
     dispatch(setErrors(errors));
-    // setErrors(errors);
     if (isValid) {
       let request = {
         email: formData["email"],
@@ -25,16 +22,19 @@ export const Register = () => {
         roles: [__USER_ROLE],
       };
       dispatch(register(request)).then((response) => {
-        if (response.payload.statusCode === 201) {
+        let statusCode = response.payload.statusCode;
+        let inDatabaseErr = document.querySelector(".existing-user-error");
+        if (statusCode === 201) {
           alert("User successfully created");
           window.location.href = "/login";
           return;
         }
-        console.error("Registration failed ");
+        if (statusCode === 400) {
+          inDatabaseErr.style.display = "block";
+        }
       });
       return;
     }
-    console.log("Rejected");
     return;
   };
 
@@ -54,6 +54,9 @@ export const Register = () => {
             </button>
           </div>
         </form>
+        <p className="existing-user-error error-field">
+          This user already exists
+        </p>
       </div>
     </section>
   );
