@@ -58,14 +58,17 @@ export const authSlice = createSlice({
       //login
       .addCase(login.pending, (state, action) => {
         console.log("Logging pending");
+        state.isLogging = true;
       })
       .addCase(login.fulfilled, (state, action) => {
         console.log("Login fullfilled ", action.payload);
         state.loggedUser = action.payload.response;
         console.log("Logged user ", state.loggedUser);
+        state.isLogging = false;
       })
       .addCase(login.rejected, (state, action) => {
         console.log("Login rejected ", action);
+        state.isLogging = false;
       });
   },
 });

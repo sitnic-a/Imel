@@ -6,6 +6,7 @@ let initialState = {
   dbUser: null,
   usersCount: 0,
   errors: [],
+  isLoading: false,
 };
 
 export const getById = createAsyncThunk(
@@ -126,15 +127,21 @@ export const userSlice = createSlice({
       //getUsers
       .addCase(getUsers.pending, (state, action) => {
         // console.log("Fetching users");
+        state.isLoading = true;
+        console.log("Loading state ", state.isLoading);
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         // console.log("Fetched users ", action.payload);
         state.dbUsers = action.payload.response;
         state.usersCount = action.payload.dataCount;
         console.log("Users count ", state.usersCount);
+        state.isLoading = false;
+        console.log("Loading state ", state.isLoading);
       })
       .addCase(getUsers.rejected, (state, action) => {
         console.log("Fetching rejected ", action.payload);
+        state.isLoading = false;
+        console.log("Loading state ", state.isLoading);
       })
 
       //addUser

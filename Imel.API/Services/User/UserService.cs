@@ -66,17 +66,20 @@ namespace Imel.API.Services.User
                     return new ResponseObject(dbUsers, StatusCodes.Status204NoContent, "GET: No records found");
                 }
 
-                if (searchQuery.IsFiltering())
+                if (searchQuery != null)
                 {
-                    if (!String.IsNullOrEmpty(searchQuery.Email) || !String.IsNullOrWhiteSpace(searchQuery.Email))
+                    if (searchQuery.IsFiltering())
                     {
-                        dbUsers = dbUsers.Where(u => u.Email == searchQuery.Email ||
-                                           u.Email.Contains(searchQuery.Email))
-                                         .AsQueryable();
-                    }
-                    if (searchQuery.Status != null)
-                    {
-                        dbUsers = dbUsers.Where(u => u.Status == searchQuery.Status);
+                        if (!String.IsNullOrEmpty(searchQuery.Email) || !String.IsNullOrWhiteSpace(searchQuery.Email))
+                        {
+                            dbUsers = dbUsers.Where(u => u.Email == searchQuery.Email ||
+                                               u.Email.Contains(searchQuery.Email))
+                                             .AsQueryable();
+                        }
+                        if (searchQuery.Status != null)
+                        {
+                            dbUsers = dbUsers.Where(u => u.Status == searchQuery.Status);
+                        }
                     }
                 }
 
@@ -123,7 +126,7 @@ namespace Imel.API.Services.User
 
                         if (createdUser.StatusCode == 400)
                         {
-                            users = await Get(query, paginationParams); 
+                            users = await Get(query, paginationParams);
                             _userLogger.LogWarning("ADD-NEW-USER: User is in database", [createdUser]);
                             return new ResponseObject(users, StatusCodes.Status400BadRequest, "ADD-NEW-USER: User is in database");
                         }
@@ -133,7 +136,7 @@ namespace Imel.API.Services.User
                             _userLogger.LogWarning("ADD-NEW-USER: New user is not created!", [createdUser]);
                             return new ResponseObject(createdUser, StatusCodes.Status204NoContent, "ADD-NEW-USER: New user is not created!");
                         }
-                         users = await Get(query, paginationParams);
+                        users = await Get(query, paginationParams);
                         _userLogger.LogInformation("ADD-NEW-USER: Succesfully created user", [users]);
                         return new ResponseObject(users, StatusCodes.Status201Created, "ADD-NEW-USER: Succesfully created user");
                     }
@@ -205,7 +208,7 @@ namespace Imel.API.Services.User
                 _userLogger.LogInformation("DELETE/{id}: Successfully deleted", [dbUser]);
                 return new ResponseObject(users, StatusCodes.Status200OK, "DELETE/{id}: Successfully deleted", users.DataCount);
             }
-            catch (Exception e )
+            catch (Exception e)
             {
                 _userLogger.LogError($"DELETE/{id}: {e.Message}", [e]);
                 return new ResponseObject(e, StatusCodes.Status500InternalServerError, $"DELETE/{id}: {e.Message}");

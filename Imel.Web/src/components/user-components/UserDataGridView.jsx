@@ -17,17 +17,8 @@ export const UserDataGridView = () => {
   let { isModalDeleteUserOpen } = useSelector((store) => store.modal);
   let lastPage = parseInt(usersCount / paginationParams.elementsPerPage);
 
-  let query = {
-    email: "",
-    status: null,
-  };
-
   useEffect(() => {
-    let newPaginationParams = {
-      ...paginationParams,
-      lastPage: lastPage,
-    };
-    dispatch(getUsers([query, newPaginationParams]));
+    dispatch(getUsers([null, paginationParams]));
   }, [paginationParams.currentPage]);
 
   return (

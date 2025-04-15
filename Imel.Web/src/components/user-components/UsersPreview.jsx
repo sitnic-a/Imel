@@ -8,6 +8,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import PdfAssistant from "../lib/export-pdf/PdfAssistant";
 import moment from "moment";
+import { Loader } from "../shared/Loader";
 
 export const UsersPreview = () => {
   let dispatch = useDispatch();
@@ -16,7 +17,7 @@ export const UsersPreview = () => {
 
   const [instance, updateInstance] = usePDF({ document: <PdfAssistant /> });
 
-  let { usersCount } = useSelector((store) => store.user);
+  let { usersCount, isLoading } = useSelector((store) => store.user);
   let { paginationParams } = useSelector((store) => store.pagination);
   let { isModalNewUserOpen } = useSelector((store) => store.modal);
 
@@ -106,6 +107,7 @@ export const UsersPreview = () => {
         <FaPlus className="new-user-icon" />
       </div>
 
+      {isLoading && <Loader />}
       <UserDataGridView />
       <p className="indatabase error-field"></p>
     </section>

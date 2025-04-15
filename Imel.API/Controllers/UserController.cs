@@ -27,7 +27,7 @@ namespace Imel.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseObject> Get([FromBody] QueryUsers query, [FromQuery] PaginationParams paginationParams)
+        public async Task<ResponseObject> Get([FromBody] QueryUsers? query =null, [FromQuery] PaginationParams? paginationParams=null)
         {
             return await _userService.Get(query,paginationParams);
         }
