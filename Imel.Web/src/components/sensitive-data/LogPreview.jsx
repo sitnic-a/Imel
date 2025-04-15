@@ -31,7 +31,7 @@ export const LogPreview = () => {
         </p>
       </header>
       {logs.length > 0 ? (
-        <table className="log-table">
+        <table className="log-table" cellSpacing={5}>
           <thead>
             <tr>
               <th className="changedBy-thead">Initiator</th>

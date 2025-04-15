@@ -537,7 +537,7 @@ body {
   }
 }
 
-@media (width<=580px) {
+@media (width<=770px) {
   .role-thead {
     display: none;
   }
@@ -585,15 +585,11 @@ body {
 }
 
 .log-table {
-  padding: 0;
-  display: inline-block;
   padding-bottom: 2rem;
-
   max-width: 900px;
-  max-height: 600px;
-  width: 100%;
   border-collapse: collapse;
   overflow-y: scroll;
+  margin: auto;
 }
 
 tbody {
@@ -612,7 +608,7 @@ tbody {
 
 .log-value {
   text-align: center;
-  padding: 0.4rem 0.375rem;
+  padding: 0.4rem 0.1rem;
 }
 
 @media (width <= 590px) {
