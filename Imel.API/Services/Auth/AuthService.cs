@@ -90,7 +90,7 @@ namespace Imel.API.Services.Auth
                 }
                 var jwtMiddleware = new JWTService(_options, _context);
                 var authenticated = await VerifyCredentials(request);
-                var dbUser = await _context.Users.SingleOrDefaultAsync(u => u.Email == request.Email);
+                var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
                 if (authenticated && dbUser is not null)
                 {
@@ -121,7 +121,7 @@ namespace Imel.API.Services.Auth
         private async Task<bool> VerifyCredentials(LoginDto request)
         {
             var dbUsers = _context.Users;
-            var existingUser = await dbUsers.SingleOrDefaultAsync(u => u.Email == request.Email);
+            var existingUser = await dbUsers.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (existingUser is not null)
             {
                 var hashToCompare = user.HashPassword(request.Password, existingUser.PasswordSalt, __ITERATIONS, __HASHALGORITHM__, __KEYSIZE__);

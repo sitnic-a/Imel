@@ -17,6 +17,15 @@ namespace Imel.API.Models
             if (status != null)
                 Status = status.Value;
         }
+
+        public User(int id, string email, byte[] passwordSalt, string passwordHash)
+        {
+            Id = id;
+            Email = email;
+            PasswordSalt = passwordSalt;
+            PasswordHash = passwordHash;
+            Status = true;
+        }
         public User(string email, byte[] passwordSalt, string passwordHash)
         {
             Email = email;

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Imel.API
@@ -156,10 +157,28 @@ namespace Imel.API
         {
             base.OnModelCreating(modelBuilder);
 
+            const int __KEYSIZE__ = 128;
+            const int __ITERATIONS = 350000;
+            HashAlgorithmName __HASHALGORITHM__ = HashAlgorithmName.SHA512;
+
+            byte[] passwordSalt = RandomNumberGenerator.GetBytes(__KEYSIZE__);
+            var hash = Rfc2898DeriveBytes
+                .Pbkdf2(Encoding.UTF8.GetBytes("Admin_Imel2025!"), passwordSalt, __ITERATIONS, __HASHALGORITHM__, __KEYSIZE__);
+            string passwordHash = Convert.ToHexString(hash).ToLower();
+
             modelBuilder
                 .Entity<Role>().HasData(
                 new Role(1, "Administrator"),
                 new Role(2, "User"));
+
+            modelBuilder
+                .Entity<User>()
+                .HasData(
+                new User(id: 1, email: "admin@imel.ba", passwordSalt: passwordSalt, passwordHash: passwordHash)
+                );
+
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole(userId: 1, roleId: 1));
 
             modelBuilder
                 .Entity<UserRole>()
