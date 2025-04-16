@@ -524,12 +524,13 @@ body {
   color: rgb(97, 0, 0);
 }
 
-.main-logs {
-  max-height: 580px;
+#logs {
+  margin-top: 3.7rem;
+  max-height: 590px;
   overflow-y: scroll;
 }
 
-#logs {
+.main-logs {
   max-width: 900px;
   max-height: 600px;
   margin-inline: auto;
@@ -537,7 +538,7 @@ body {
 }
 
 @media (width<=730px) {
-  #logs {
+  .main-logs {
     margin-inline: 1rem;
   }
 }
@@ -568,13 +569,13 @@ body {
   }
 }
 
-#logs header {
+.main-logs header {
   max-width: 600px;
   margin-inline: auto;
   margin-bottom: 3rem;
 }
 
-#logs header h1 {
+.main-logs header h1 {
   text-align: center;
 }
 
@@ -597,6 +598,10 @@ body {
   margin: auto;
 }
 
+thead > tr {
+  line-height: 3;
+}
+
 tbody {
   width: auto;
 }
@@ -609,6 +614,10 @@ tbody {
 
 .log-container:nth-child(even) {
   background: #f1f1f1;
+}
+
+.log-container:nth-child(odd) {
+  background: #dbdbdb;
 }
 
 .log-value {

@@ -18,8 +18,8 @@ export const LogPreview = () => {
   return isLoading ? (
     <Loader />
   ) : (
-    <section className="main-logs">
-      <section id="logs">
+    <section id="logs">
+      <section className="main-logs">
         <header>
           <h1>Audit log list</h1>
           <p className="subtitle">
