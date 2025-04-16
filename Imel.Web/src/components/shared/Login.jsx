@@ -29,7 +29,6 @@ export const Login = () => {
         let credentialError = document.querySelector(".credentials-error");
 
         if (payload.statusCode === 200) {
-          credentialError.style.display = "block";
           sessionStorage.setItem("token", payload.response.jwToken);
           navigate("/dashboard", {
             state: {

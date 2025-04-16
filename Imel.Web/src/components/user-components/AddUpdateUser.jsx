@@ -9,7 +9,7 @@ export const AddUpdateUser = () => {
   }
 
   return (
-    <section>
+    <section className="add-update-wrapper">
       {id === undefined && <NewUser />}
       {id !== undefined && id > 0 && <UpdateUser />}
     </section>

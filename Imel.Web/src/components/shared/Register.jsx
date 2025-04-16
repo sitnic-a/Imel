@@ -3,9 +3,11 @@ import { register } from "../../redux-toolkit/features/authSlice";
 import { verifyEnteredFields } from "../../utils";
 import { FormFields } from "./FormFields";
 import { setErrors } from "../../redux-toolkit/features/userSlice";
+import { Loader } from "./Loader";
 
 export const Register = () => {
   let dispatch = useDispatch();
+  let { isRegistering } = useSelector((store) => store.auth);
   let { errors } = useSelector((store) => store.user);
 
   let handleSubmit = (e) => {
@@ -25,7 +27,6 @@ export const Register = () => {
         let statusCode = response.payload.statusCode;
         let inDatabaseErr = document.querySelector(".existing-user-error");
         if (statusCode === 201) {
-          alert("User successfully created");
           window.location.href = "/login";
           return;
         }
@@ -38,7 +39,9 @@ export const Register = () => {
     return;
   };
 
-  return (
+  return isRegistering ? (
+    <Loader />
+  ) : (
     <section id="register">
       <h1>Dobrodošli na registracijski panel</h1>
       <h3>

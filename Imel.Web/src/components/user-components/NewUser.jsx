@@ -1,9 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addNewUser, setErrors } from "../../redux-toolkit/features/userSlice";
-import {
-  openNewUserModal,
-  setIsLoading,
-} from "../../redux-toolkit/features/modalSlice";
+import { openNewUserModal } from "../../redux-toolkit/features/modalSlice";
 import { verifyEnteredFields } from "../../utils";
 import { Errors } from "../shared/Errors";
 
@@ -21,7 +18,6 @@ export const NewUser = () => {
     let [errors, isValid] = verifyEnteredFields(formData);
     dispatch(setErrors(errors));
     if (isValid) {
-      dispatch(setIsLoading(!isLoading));
       //Call service to add new user
       // Hardcoded value for password since user will have a possibility to change it's password
       // One more reason to hard code is an add action that makes no sence to be in this panel
@@ -48,7 +44,6 @@ export const NewUser = () => {
         if (payload.dataCount % 5 === 1) window.location.reload();
       });
       dispatch(openNewUserModal(!isModalNewUserOpen));
-      dispatch(setIsLoading(!isLoading));
     }
   };
 
