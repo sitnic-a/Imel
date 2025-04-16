@@ -26,9 +26,11 @@ const PdfAssistant = () => {
 
   useEffect(() => {
     let fetchUsers = async () => {
+      let token = sessionStorage.getItem("token");
       let request = await fetch(`${application.url}/export/`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       await request.json().then((data) => {
