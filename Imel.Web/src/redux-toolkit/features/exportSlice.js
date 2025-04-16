@@ -9,10 +9,12 @@ let initialState = {
 export const getUsersReadyToExport = createAsyncThunk(
   "export/users",
   async () => {
+    let token = sessionStorage.getItem("token");
     let url = `${application.url}/export/`;
     let request = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     let response = await request.json();
