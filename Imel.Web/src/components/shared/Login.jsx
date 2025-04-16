@@ -55,7 +55,7 @@ export const Login = () => {
         <form className="login-form" onSubmit={handleSubmit}>
           <FormFields errors={errors} />
           <p className="credentials-error error-field">
-            Incorrect credentials, try again
+            Molimo provjerite Vaše login podatke(lozinka i password)
           </p>
 
           <div className="wrapper login-actions">

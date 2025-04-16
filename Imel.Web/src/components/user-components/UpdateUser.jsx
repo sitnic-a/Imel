@@ -134,6 +134,14 @@ export const UpdateUser = () => {
           >
             Snimi promjene
           </button>
+
+          <button
+            type="button"
+            className="save-changes"
+            onClick={() => window.history.back()}
+          >
+            Odustani
+          </button>
         </div>
         <Errors errors={errors} />
       </div>

@@ -107,8 +107,8 @@ export const UsersPreview = () => {
         <FaPlus className="new-user-icon" />
       </div>
 
-      {isLoading && <Loader />}
       <UserDataGridView />
+
       <p className="indatabase error-field"></p>
     </section>
   );

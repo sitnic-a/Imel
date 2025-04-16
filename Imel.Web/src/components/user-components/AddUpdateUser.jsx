@@ -4,10 +4,8 @@ import { UpdateUser } from "./UpdateUser";
 
 export const AddUpdateUser = () => {
   let { id } = fetchLocationStateHook();
-  console.log("Id ", id);
 
   if (id === undefined) {
-    console.log("ULALAA");
   }
 
   return (

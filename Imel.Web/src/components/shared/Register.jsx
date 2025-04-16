@@ -55,7 +55,7 @@ export const Register = () => {
           </div>
         </form>
         <p className="existing-user-error error-field">
-          This user already exists
+          Ovaj korisnik je već registrovan
         </p>
       </div>
     </section>

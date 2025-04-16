@@ -7,13 +7,14 @@ import { fetchLocationStateHook } from "../../custom/fetchLocationStateHook";
 import { displayConfirmationContainer } from "../../helpers/shared-helpers";
 import { Confirmation } from "../shared/Confirmation";
 import { MdModeEdit, MdDelete } from "react-icons/md";
+import { Loader } from "../shared/Loader";
 
 export const UserDataGridView = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let { loggedUser } = fetchLocationStateHook();
   let { paginationParams } = useSelector((store) => store.pagination);
-  let { dbUsers, usersCount } = useSelector((store) => store.user);
+  let { dbUsers, usersCount, isLoading } = useSelector((store) => store.user);
   let { isModalDeleteUserOpen } = useSelector((store) => store.modal);
   let lastPage = parseInt(usersCount / paginationParams.elementsPerPage);
 
@@ -21,7 +22,9 @@ export const UserDataGridView = () => {
     dispatch(getUsers([null, paginationParams]));
   }, [paginationParams.currentPage]);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="user-list-main-container">
       <div className="cols">
         <div className="col col-email">

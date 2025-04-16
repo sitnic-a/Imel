@@ -11,8 +11,7 @@ export const UserDashboard = () => {
     <Loader />
   ) : (
     <section id="user-dashboard">
-      {isModalNewUserOpen && <AddUpdateUser />}
-      <UsersPreview />
+      <p>Dobrodošao na svoj home page poštovani korisniče!</p>
     </section>
   );
 };

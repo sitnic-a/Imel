@@ -1,9 +1,11 @@
 #root {
   max-width: 1440px;
-  margin: auto;
+  /* margin: auto; */
 }
 
 body {
+  margin: 0;
+  position: relative;
   user-select: none;
   -moz-user-select: none;
 }
@@ -164,6 +166,11 @@ body {
 
 .credentials-error {
   display: none;
+}
+
+#admin-dashboard {
+  max-width: 1440px;
+  height: 100vh;
 }
 
 #user-dashboard {
@@ -386,8 +393,11 @@ body {
   margin-block: 0.25rem;
   padding-block: 0.7rem;
   margin-left: 1rem;
-  overflow-x: scroll;
   /* background: red; */
+}
+
+.users .col:nth-child(1) {
+  overflow-x: scroll;
 }
 
 .users .col::-webkit-scrollbar {
