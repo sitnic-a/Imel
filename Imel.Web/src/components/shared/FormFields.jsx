@@ -18,9 +18,11 @@ export const FormFields = () => {
           onFocus={() => {
             dispatch(setErrors([]));
             let credentialError = document.querySelector(".credentials-error");
+            let tooManyAttempts = document.querySelector(".many-attempts");
             let inDatabaseErr = document.querySelector(".existing-user-error");
 
             hideOnCondition(credentialError);
+            hideOnCondition(tooManyAttempts);
             hideOnCondition(inDatabaseErr);
           }}
           className="form-field"

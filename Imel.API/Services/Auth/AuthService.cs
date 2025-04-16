@@ -22,6 +22,8 @@ namespace Imel.API.Services.Auth
         public const int __ITERATIONS = 350000;
         public const int __ADMIN_ROLE__ = 1;
         public const int __USER_ROLE__ = 2;
+        private const int __MAX_POSSIBLE_LOGIN_ATTEMPTS_BEFORE_LOCKOUT__ = 5;
+
 
         private HashAlgorithmName __HASHALGORITHM__ = HashAlgorithmName.SHA512;
         private Models.User user = new Models.User();
@@ -83,33 +85,50 @@ namespace Imel.API.Services.Auth
         {
             try
             {
-                if (!user.IsValid(request.Email, request.Password))
+                if (LoginDto.LoginAttempts <= __MAX_POSSIBLE_LOGIN_ATTEMPTS_BEFORE_LOCKOUT__)
                 {
-                    _authLogger.LogError("LOGIN: Argument is not valid", [request]);
-                    return new ResponseObject(request, StatusCodes.Status400BadRequest, "LOGIN: Argument is not valid");
-                }
-                var jwtMiddleware = new JWTService(_options, _context);
-                var authenticated = await VerifyCredentials(request);
-                var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
-                if (authenticated && dbUser is not null)
-                {
-                    var dbUserRoles = await _roleHelper.GetUserRoles(dbUser);
-                    var token = jwtMiddleware.GenerateToken(dbUser);
-
-                    if (String.IsNullOrEmpty(token))
+                    if (!user.IsValid(request.Email, request.Password))
                     {
-                        _authLogger.LogError("LOGIN: Token was not created", [token]);
-                        return new ResponseObject(token, StatusCodes.Status401Unauthorized, "LOGIN: Token was not created");
+                        LoginDto.LoginAttempts++;
+                        _authLogger.LogError("LOGIN: Argument is not valid", [request]);
+                        return new ResponseObject(request, StatusCodes.Status400BadRequest, "LOGIN: Argument is not valid");
+                    }
+                    var jwtMiddleware = new JWTService(_options, _context);
+                    var authenticated = await VerifyCredentials(request);
+                    var dbUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+                    if (authenticated && dbUser is not null)
+                    {
+                        var dbUserRoles = await _roleHelper.GetUserRoles(dbUser);
+                        var token = jwtMiddleware.GenerateToken(dbUser);
+
+                        if (String.IsNullOrEmpty(token))
+                        {
+                            LoginDto.LoginAttempts++;
+                            _authLogger.LogError("LOGIN: Token was not created", [token]);
+                            return new ResponseObject(token, StatusCodes.Status401Unauthorized, "LOGIN: Token was not created");
+                        }
+
+                        LoginDto.LoginAttempts = 0;
+                        var responseUser = new SignedUser(dbUser.Id, dbUser.Email, token, dbUserRoles);
+                        _authLogger.LogInformation("LOGIN: Successfully logged in", [responseUser]);
+                        return new ResponseObject(responseUser, StatusCodes.Status200OK, "LOGIN: Successfully logged in");
                     }
 
-                    var responseUser = new SignedUser(dbUser.Id, dbUser.Email, token, dbUserRoles);
-                    _authLogger.LogInformation("LOGIN: Successfully logged in", [responseUser]);
-                    return new ResponseObject(responseUser, StatusCodes.Status200OK, "LOGIN: Successfully logged in");
+                    LoginDto.LoginAttempts++;
+                    _authLogger.LogWarning("LOGIN: Database user not available", [dbUser]);
+                    return new ResponseObject(dbUser, StatusCodes.Status400BadRequest, "LOGIN: Database user not available");
                 }
-
-                _authLogger.LogWarning("LOGIN: Database user not available", [dbUser]);
-                return new ResponseObject(dbUser, StatusCodes.Status400BadRequest, "LOGIN: Database user not available");
+                _authLogger.LogError($"LOGIN: Too many attempts, request locked, available at " +
+                    $"{DateTime.Now
+                    .AddMinutes(20)
+                    .ToShortTimeString()}", [LoginDto.LoginAttempts]);
+                LoginDto.LoginAttempts = 0;
+                return new ResponseObject(new object(), StatusCodes.Status429TooManyRequests, $"LOGIN: Too many attempts, request locked, available at " +
+                    $"{DateTime.Now
+                    .AddMinutes(20)
+                    .ToShortTimeString()}");
             }
             catch (Exception e)
             {

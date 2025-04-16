@@ -169,6 +169,10 @@ body {
   display: none;
 }
 
+.many-attempts {
+  display: none;
+}
+
 #admin-dashboard {
   max-width: 1440px;
   height: 100vh;

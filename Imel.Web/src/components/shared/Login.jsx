@@ -27,6 +27,7 @@ export const Login = () => {
       dispatch(login(request)).then((data) => {
         let payload = data.payload;
         let credentialError = document.querySelector(".credentials-error");
+        let tooManyAttempts = document.querySelector(".many-attempts");
 
         if (payload.statusCode === 200) {
           sessionStorage.setItem("token", payload.response.jwToken);
@@ -36,6 +37,26 @@ export const Login = () => {
             },
           });
         }
+
+        if (payload.statusCode === 429) {
+          tooManyAttempts.style.display = "block";
+          let inputs = document.querySelectorAll(".login-form input");
+          let submitBtn = document.querySelector(".login-form .submit");
+          console.log("Input to disable ", inputs);
+
+          inputs.forEach((el) => {
+            el.disabled = true;
+          });
+          submitBtn.disabled = true;
+          setTimeout(function () {
+            inputs.forEach((el) => {
+              el.disabled = false;
+            });
+            submitBtn.disabled = false;
+          }, 5000);
+          return;
+        }
+
         if (payload.statusCode !== 200) {
           credentialError.style.display = "block";
         }
@@ -55,6 +76,9 @@ export const Login = () => {
           <FormFields errors={errors} />
           <p className="credentials-error error-field">
             Molimo provjerite Vaše login podatke(lozinka i password)
+          </p>
+          <p className="many-attempts error-field">
+            Previše pokušaja. Pokušajte za kratko vrijeme ponovo!
           </p>
 
           <div className="wrapper login-actions">

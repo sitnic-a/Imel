@@ -17,7 +17,7 @@ namespace Imel.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ResponseObject> Register ([FromBody] RegisterDto request)
+        public async Task<ResponseObject> Register([FromBody] RegisterDto request)
         {
             return await _authService.Register(request);
         }
@@ -25,7 +25,7 @@ namespace Imel.API.Controllers
         [HttpPost("login")]
         public async Task<ResponseObject> Login([FromBody] LoginDto request)
         {
-            return await _authService.Login(request);
+                return await _authService.Login(request);
         }
     }
 }
