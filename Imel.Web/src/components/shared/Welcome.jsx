@@ -8,7 +8,7 @@ export const Welcome = () => {
       </h4>
       <p>
         Tokom kreiranja aplikacije korišteni su: .NET 8, Vite, Redux Toolkit,
-        MSSQL Developer 2019, JavaScript, React
+        MSSQL Developer 2019, JavaScript, React.{" "}
         <strong>
           Aplikacija je full responsive i primarni dizajn joj je trenutno
           koncipiran za ekrane (1440px)
