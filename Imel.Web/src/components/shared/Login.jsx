@@ -5,9 +5,12 @@ import { verifyLoginCredentials } from "../../utils";
 import { FormFields } from "./FormFields";
 import { useNavigate } from "react-router-dom";
 import { setErrors } from "../../redux-toolkit/features/userSlice";
+import moment from "moment";
 
 export const Login = () => {
   let dispatch = useDispatch();
+  const timeToWait = 1000 * 60 * 2;
+  let [availabilityTime, setAvailabilityTime] = useState(timeToWait);
   let navigate = useNavigate();
   let { errors } = useSelector((store) => store.user);
 
@@ -42,18 +45,41 @@ export const Login = () => {
           tooManyAttempts.style.display = "block";
           let inputs = document.querySelectorAll(".login-form input");
           let submitBtn = document.querySelector(".login-form .submit");
-          console.log("Input to disable ", inputs);
+
+          const second = 1000;
+          sessionStorage.setItem("locked", true);
+          var timer = setInterval(() => {
+            sessionStorage.setItem("locked", true);
+
+            setAvailabilityTime((current) => {
+              current = current - second;
+              console.log("Available time ", current);
+              sessionStorage.setItem("timeToWait", current);
+              return current;
+            });
+            if (availabilityTime <= 0) {
+              setAvailabilityTime(timeToWait);
+              return;
+            }
+          }, second);
 
           inputs.forEach((el) => {
             el.disabled = true;
           });
           submitBtn.disabled = true;
+
           setTimeout(function () {
             inputs.forEach((el) => {
               el.disabled = false;
             });
             submitBtn.disabled = false;
-          }, 5000);
+            clearInterval(timer);
+            setAvailabilityTime(timeToWait);
+            let tooManyAttempts = document.querySelector(".many-attempts");
+            tooManyAttempts.style.display = "none";
+            sessionStorage.removeItem("locked");
+          }, availabilityTime);
+
           return;
         }
 
@@ -78,7 +104,8 @@ export const Login = () => {
             Molimo provjerite Vaše login podatke(lozinka i password)
           </p>
           <p className="many-attempts error-field">
-            Previše pokušaja. Pokušajte za kratko vrijeme ponovo!
+            Previše pokušaja. Pokušajte za{" "}
+            {moment(availabilityTime).format("mm:ss")} minute
           </p>
 
           <div className="wrapper login-actions">
