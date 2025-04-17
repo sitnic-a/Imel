@@ -32,7 +32,8 @@ namespace Imel.API.Utils
                 Subject = new ClaimsIdentity(claims),
                 Issuer = "http://localhost:5173",
                 IssuedAt = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddMinutes(100),
+                //for the sake of review I set this to be 100 minutes, usually it' 10 tops, with usage of refresh tokens
+                Expires = DateTime.UtcNow.AddMinutes(100), 
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
