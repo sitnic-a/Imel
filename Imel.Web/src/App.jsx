@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux-toolkit/store";
+import { Welcome } from "./components/shared/Welcome";
+import { Register } from "./components/shared/Register";
+import { Login } from "./components/shared/Login";
+import { Dashboard } from "./components/shared/Dashboard";
+import { RequireAuth } from "./components/shared/RequireAuth";
+import "./App.css";
+import { UpdateUser } from "./components/user-components/UpdateUser";
+import { LogPreview } from "./components/sensitive-data/LogPreview";
+// import { Loader } from "./components/shared/Loader";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Provider store={store}>
+      <main>
+        {/* <Loader /> */}
+        <Router>
+          <Routes>
+            <Route index element={<Welcome />}></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+
+            <Route element={<RequireAuth />}>
+              <Route path="/dashboard" element={<Dashboard />}></Route>
+              <Route path="user/:id" element={<UpdateUser />}></Route>
+              <Route path="/audit/master/logs" element={<LogPreview />}></Route>
+            </Route>
+          </Routes>
+        </Router>
+      </main>
+    </Provider>
+  );
 }
 
-export default App
+export default App;
