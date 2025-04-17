@@ -43,31 +43,24 @@ export const authSlice = createSlice({
     builder
       //register
       .addCase(register.pending, (state, action) => {
-        console.log("Pending");
         state.isRegistering = true;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log("Action payload ", action.payload);
         state.isRegistering = false;
       })
       .addCase(register.rejected, (state, action) => {
-        console.log("Rejected ", action.payload);
         state.isRegistering = false;
       })
 
       //login
       .addCase(login.pending, (state, action) => {
-        console.log("Logging pending");
         state.isLogging = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log("Login fullfilled ", action.payload);
         state.loggedUser = action.payload.response;
-        console.log("Logged user ", state.loggedUser);
         state.isLogging = false;
       })
       .addCase(login.rejected, (state, action) => {
-        console.log("Login rejected ", action);
         state.isLogging = false;
       });
   },

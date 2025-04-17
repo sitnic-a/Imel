@@ -37,13 +37,15 @@ namespace Imel.API.Services.Audit
                     }
                 }
 
-                if(paginationParams.CurrentPage > 1)
+                if (paginationParams.CurrentPage > 1)
                 {
                     dbLogs = dbLogs
+                        .OrderByDescending(l => l.LoggedAt)
                         .Skip(paginationParams.PreviousPage * paginationParams.ElementsPerPage)
                         .Take(paginationParams.ElementsPerPage);
 
                     logs = await dbLogs
+                        .OrderByDescending(l => l.LoggedAt)
                         .Select(l => new LogDto(l.Id, l.ChangedBy, l.ChangedByRole, l.MethodName, l.OriginalValue, l.NewValue, l.LoggedAt.Value))
                         .ToListAsync();
 
@@ -57,6 +59,8 @@ namespace Imel.API.Services.Audit
                 }
 
                 logs = await dbLogs
+                        .OrderByDescending(l => l.LoggedAt)
+                        .Take(100)
                         .Select(l => new LogDto(l.Id, l.ChangedBy, l.ChangedByRole, l.MethodName, l.OriginalValue, l.NewValue, l.LoggedAt.Value))
                         .ToListAsync();
 

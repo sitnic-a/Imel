@@ -11,9 +11,34 @@ body {
 }
 
 #welcome {
-  max-width: 900px;
+  max-width: 1200px;
   margin-inline: auto;
   text-align: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.ulist-title {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f00;
+  margin-bottom: 0.3rem;
+}
+
+.ulist-subtitle {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-block: 0.5rem;
+}
+
+@media (width<=760px) {
+  #welcome {
+    margin-inline: 0.8rem;
+  }
 }
 
 #loader {
