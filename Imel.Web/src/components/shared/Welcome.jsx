@@ -36,11 +36,16 @@ export const Welcome = () => {
             uređivanje, brisanje, dodavanje i filtriranje). Filtriranje je
             moguće vršiti po bilo kojem parametru
           </li>
-          <li>Dodatna funkcionalnost je eksportovanje usera u pdf file</li>
+          <li>
+            Dodatna funkcionalnost je eksportovanje usera u pdf file. Ukoliko se
+            administrator odluči za manipulaciju korisnicima, potrebno je
+            refreshati stranicu za dobijanje nove verzije podataka za korektan
+            pdf export
+          </li>
           <li>
             Ukoliko se 5 puta pogrešno unesu pristupni podaci, aplikacija će
-            onemogućiti korisniku unos podataka u trajanju od 2 minute ukoliko
-            se stranica ne pokrene ponovo
+            onemogućiti korisniku unos podataka u trajanju od 2 minute pod
+            uslovom da se stranica ne pokrene ponovo
           </li>
         </ul>
         <br />
@@ -74,6 +79,11 @@ export const Welcome = () => {
             U daljnoj izradi mogla bi se implemetirati mogućnost promjene
             passworda jer ukoliko administrator kreira usera, user ima default
             password koji je <strong>password123!</strong>
+          </li>
+          <li>
+            Onemogućena je mogućnost kreiranja novog usera kroz panel kreiranja
+            korisnika jer smatram da to nije dobra praksa te da za to treba
+            postojati specijalan dio aplikacija. Slično dijelu sa audit logs
           </li>
         </ul>
       </ul>

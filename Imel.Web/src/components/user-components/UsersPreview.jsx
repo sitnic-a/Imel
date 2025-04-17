@@ -49,6 +49,7 @@ export const UsersPreview = () => {
           className="export-to-pdf-btn"
           href={instance.url}
           download={fileName}
+          onClick={() => updateInstance(<PdfAssistant />)}
         >
           Izvezi u PDF
         </a>
